@@ -1,0 +1,10 @@
+.settings/
+out/
+curso.exe
+Makefile
+.cproject
+.project
+.oppbuildspec
+src/results
+src/General.anf
+src/.qtenvrc
