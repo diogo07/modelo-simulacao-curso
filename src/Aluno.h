@@ -52,7 +52,10 @@ public:
     virtual int getQtdMatriculas();
     virtual void setQtdMatriculas(int qtde);
 
-    virtual double getQuantidadeSemestresCursados();
+    virtual int getQuantidadeSemestresCursados(double saida);
+
+
+    virtual bool temPossibilidadeDeGraduar(double semestreAtual, int periodoAtual);
 
 
 };

@@ -14,6 +14,19 @@ class Periodo : public cSimpleModule {
         simsignal_t quantidadeAprovados;
         simsignal_t quantidadeReprovados;
         simsignal_t totalEvadidos;
+        simsignal_t evadidosPorSemestre[21];
+        simsignal_t retidosPorSemestre[21];
+        simsignal_t aprovadosPorSemestre[21];
+        simsignal_t evadidos_Semestre_periodo[21][10];
+        simsignal_t aprovados_Semestre_periodo[21][10];
+        simsignal_t retidos_Semestre_periodo[21][10];
+
+
+
+        simsignal_t quantidadeEvadidosGeral;
+        simsignal_t quantidadeAprovadosGeral;
+        simsignal_t quantidadeReprovadosGeral;
+
         virtual bool compare(Aluno * aluno1, Aluno * aluno2);
         virtual void adicionarNaTurma(Aluno *aluno);
         virtual void avaliarAluno(Aluno *aluno);
@@ -22,6 +35,7 @@ class Periodo : public cSimpleModule {
         virtual double notaAleatoria();
         virtual void emitirDadosDoPeriodo();
         virtual void processarAluno(Aluno *aluno);
+        virtual void iniciarEstatisticasEmArray();
 
     public:
         virtual ~Periodo() override;
@@ -37,6 +51,10 @@ class Periodo : public cSimpleModule {
         int contadorDeAlunosNaTurma;
         int aprovados;
         int reprovados;
+
+        int aprovadosGeral;
+        int reprovadosGeral;
+        int evadidosGeral;
 
 //      BOUMI
 //        double taxasDeEvasao [10] =  {0.2126, 0.2126, 0.2407, 0.2407, 0.2503, 0.2503, 0.2534, 0.2534, 0.2544, 0.2544 };

@@ -106,6 +106,17 @@ double Aluno::getSaida(){
     return this->saida;
 }
 
-double Aluno::getQuantidadeSemestresCursados(){
-    return (this->saida - this->entrada) / 6;
+int Aluno::getQuantidadeSemestresCursados(double saida){
+    return (int)((saida - this->entrada) / 6);
 }
+
+bool Aluno::temPossibilidadeDeGraduar(double semestreAtual, int periodoAtual){
+    int semestres = (int) ((semestreAtual - this->entrada) / 6);
+    if((semestres + (10 - periodoAtual)) > 15){
+        return false;
+    } else {
+        return true;
+    }
+//    return (semestres + (10 - periodoAtual)) > 15 ? false : true;
+}
+
