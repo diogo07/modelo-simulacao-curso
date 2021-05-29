@@ -131,26 +131,24 @@ void Periodo::processarAluno(Aluno *aluno) {
     aluno->setNovato(false);
     adicionarNaTurma(aluno);
 
-    if (turma.getLength() > 0 && contadorDeAlunosNaTurma < capacidadeTurma) {
+    if (turma.getLength() > 0) {
 
         Aluno *alunoDaTurma = check_and_cast<Aluno*>(turma.pop());
+
         contadorDeAlunosNaTurma++;
-        int quantidadeSemestres = (int) (tempo.dbl()
-                - alunoDaTurma->getEntrada()) / 6;
-        bool possibilidadeDeGraduar =
-                ((alunoDaTurma->getQuantidadeSemestresCursados(tempo.dbl())
-                        - indice + 10) <= 21);
+        int quantidadeSemestres = (int) (tempo.dbl() - alunoDaTurma->getEntrada()) / 6;
+        bool possibilidadeDeGraduar = ((alunoDaTurma->getQuantidadeSemestresCursados(tempo.dbl()) - indice + 10) <= 21);
+
+        emit(aprovados_Semestre_periodo[quantidadeSemestres - 1][indice - 1], 1);
+
+//        emit(turma_Semestre_periodo[quantidadeSemestres - 1][indice - 1], 1);
         if (possibilidadeDeGraduar) {
             if (evadir()) {
                 evadidos.insert(alunoDaTurma);
                 evadidosGeral++;
 
-                emit(
-                        evadidosPorSemestre[alunoDaTurma->getQuantidadeSemestresCursados(
-                                tempo.dbl()) - 1], 1);
-                emit(
-                        evadidos_Semestre_periodo[alunoDaTurma->getQuantidadeSemestresCursados(
-                                tempo.dbl()) - 1][indice - 1], 1);
+                emit(evadidosPorSemestre[quantidadeSemestres - 1], 1);
+                emit(evadidos_Semestre_periodo[quantidadeSemestres - 1][indice - 1], 1);
                 emit(totalEvadidos, 1);
             } else {
                 avaliarAluno(alunoDaTurma);
@@ -158,12 +156,8 @@ void Periodo::processarAluno(Aluno *aluno) {
         } else {
             evadidos.insert(alunoDaTurma);
             evadidosGeral++;
-            emit(
-                    evadidosPorSemestre[alunoDaTurma->getQuantidadeSemestresCursados(
-                            tempo.dbl()) - 1], 1);
-            emit(
-                    evadidos_Semestre_periodo[alunoDaTurma->getQuantidadeSemestresCursados(
-                            tempo.dbl()) - 1][indice - 1], 1);
+            emit(evadidosPorSemestre[quantidadeSemestres - 1], 1);
+            emit(evadidos_Semestre_periodo[quantidadeSemestres - 1][indice - 1], 1);
             emit(totalEvadidos, 1);
 
         }
@@ -172,42 +166,31 @@ void Periodo::processarAluno(Aluno *aluno) {
 
 void Periodo::avaliarAluno(Aluno *aluno) {
     aluno->setNovato(false);
+    int quantidadeSemestres = (int) (tempo.dbl() - aluno->getEntrada()) / 6;
+
     if (reter()) {
         reprovados++;
         reprovadosGeral++;
-        emit(
-                retidosPorSemestre[aluno->getQuantidadeSemestresCursados(
-                        tempo.dbl()) - 1], 1);
-
+        emit(retidosPorSemestre[quantidadeSemestres - 1], 1);
         aluno->setReprovacoes(indice - 1, aluno->getReprovacoes(indice - 1) + 1);
         if (aluno->getReprovacoes(indice - 1) >= 4) {
             emit(totalEvadidos, 1);
             evadidos.insert(aluno);
             evadidosGeral++;
-            ;
 
-            emit(
-                    evadidosPorSemestre[aluno->getQuantidadeSemestresCursados(
-                            tempo.dbl()) - 1], 1);
-            emit(
-                    evadidos_Semestre_periodo[aluno->getQuantidadeSemestresCursados(
-                            tempo.dbl()) - 1][indice - 1], 1);
+
+            emit(evadidosPorSemestre[quantidadeSemestres - 1], 1);
+            emit(evadidos_Semestre_periodo[quantidadeSemestres - 1][indice - 1], 1);
         } else {
             send(aluno, "saida", portaSaidaInicialReprovacao + capacidadeTurma);
-            emit(
-                    retidos_Semestre_periodo[aluno->getQuantidadeSemestresCursados(
-                                            tempo.dbl()) - 1][indice - 1], 1);
+            emit(retidos_Semestre_periodo[quantidadeSemestres - 1][indice - 1], 1);
         }
 
     } else {
         aprovados++;
         aprovadosGeral++;
-        emit(
-                aprovadosPorSemestre[aluno->getQuantidadeSemestresCursados(
-                        tempo.dbl()) - 1], 1);
-        emit(
-                aprovados_Semestre_periodo[aluno->getQuantidadeSemestresCursados(
-                        tempo.dbl()) - 1][indice - 1], 1);
+//        emit(aprovados_Semestre_periodo[quantidadeSemestres - 1][indice - 1], 1);
+        emit(aprovadosPorSemestre[quantidadeSemestres - 1], 1);
         send(aluno, "saida", portaSaida);
     }
 }
@@ -299,5 +282,21 @@ void Periodo::iniciarEstatisticasEmArray() {
                         statisticTemplatePQ);
                 retidos_Semestre_periodo[p][q] = signalPQ;
             }
-        }
+    }
+
+//    for (int r = 0; r < 21; ++r) {
+//
+//                for (int s = 0; s < 10; ++s) {
+//
+//                    char signalNameRS[32];
+//                    sprintf(signalNameRS, "turma_Semestre_periodo%d_%d", r, s);
+//                    simsignal_t signalRS = registerSignal(signalNameRS);
+//                    cProperty *statisticTemplateRS = getProperties()->get(
+//                            "statisticTemplate",
+//                            "turma_Semestre_periodoTemplate");
+//                    getEnvir()->addResultRecorders(this, signalRS, signalNameRS,
+//                            statisticTemplateRS);
+//                    turma_Semestre_periodo[r][s] = signalRS;
+//                }
+//     }
 }

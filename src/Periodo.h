@@ -20,6 +20,7 @@ class Periodo : public cSimpleModule {
         simsignal_t evadidos_Semestre_periodo[21][10];
         simsignal_t aprovados_Semestre_periodo[21][10];
         simsignal_t retidos_Semestre_periodo[21][10];
+        simsignal_t turma_Semestre_periodo[21][10];
 
 
 

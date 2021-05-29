@@ -19,6 +19,7 @@ simple Periodo
         @signal[evadidos_Semestre_periodo*](type=simtime_t);
         @signal[aprovados_Semestre_periodo*](type=simtime_t);
         @signal[retidos_Semestre_periodo*](type=simtime_t);
+        @signal[turma_Semestre_periodo*](type=simtime_t);
         @statistic[tamanhoTurma](title="Turma"; record=stats; unit=ms);
         @statistic[tamanhoFilaEspera](title="Fila de Espera"; record=stats; unit=ms);
         @statistic[quantidadeEvadidos](title="Evadidos"; record=stats; unit=ms);
@@ -33,6 +34,7 @@ simple Periodo
         @statisticTemplate[evadidos_Semestre_periodoTemplate](title="Evadidos_Semestre_Periodo";record=stats;unit=ms);
         @statisticTemplate[aprovados_Semestre_periodoTemplate](title="Aprovados_Semestre_Periodo";record=stats;unit=ms);
         @statisticTemplate[retidos_Semestre_periodoTemplate](title="Retidos_Semestre_Periodo";record=stats;unit=ms);
+        @statisticTemplate[turma_Semestre_periodoTemplate](title="Turma_Semestre_Periodo";record=stats;unit=ms);
 		
         int capacidadeTurma;
         double probabilidadeEvasao = default (30.0);
