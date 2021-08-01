@@ -11,7 +11,7 @@ class Inicio : public cSimpleModule {
     int portaSaida = 0;
     int contador = 0;
     int tamanhoTurma = 40;
-    int numeroExecucoes = 1000;
+    int numeroExecucoes = 10000;
     simsignal_t totalAlunos;
   protected:
     virtual void initialize() override;

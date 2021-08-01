@@ -45,6 +45,7 @@ public:
     virtual int getFaltas();
 
     virtual int getReprovacoes(int index);
+    virtual int getTotalReprovacoes();
     virtual bool getNovato();
     virtual double getEntrada();
     virtual double getSaida();

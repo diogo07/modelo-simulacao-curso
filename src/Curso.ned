@@ -7,34 +7,26 @@ simple Periodo
         @display("i=block/network;");
         @signal[tamanhoTurma](type="long");
         @signal[tamanhoFilaEspera](type="long");
-        @signal[quantidadeEvadidos](type="long");
-        @signal[quantidadeAprovados](type="long");
-        @signal[quantidadeReprovados](type="long");
         @signal[quantidadeEvadidosGeral](type="long");
-        @signal[quantidadeAprovadosGeral](type="long");
-        @signal[quantidadeReprovadosGeral](type="long");
+        @signal[quantidadeRetidosGeral](type="long");
+        @signal[evadidosPorPeriodo*](type=simtime_t);
+        @signal[retidosPorPeriodo*](type=simtime_t);
         @signal[evadidosPorSemestre*](type=simtime_t);
         @signal[retidosPorSemestre*](type=simtime_t);
-        @signal[aprovadosPorSemestre*](type=simtime_t);
-        @signal[evadidos_Semestre_periodo*](type=simtime_t);
-        @signal[aprovados_Semestre_periodo*](type=simtime_t);
-        @signal[retidos_Semestre_periodo*](type=simtime_t);
-        @signal[turma_Semestre_periodo*](type=simtime_t);
+        @signal[evadidosSemestrePeriodo*](type=simtime_t);
+        @signal[retidosSemestrePeriodo*](type=simtime_t);
+        @statistic[evadidosPorPeriodoTemplate](title="Evadidos por Periodo";record=stats;unit=ms);
+        @statistic[retidosPorPeriodoTemplate](title="Retidos por Periodo";record=stats;unit=ms);
         @statistic[tamanhoTurma](title="Turma"; record=stats; unit=ms);
         @statistic[tamanhoFilaEspera](title="Fila de Espera"; record=stats; unit=ms);
-        @statistic[quantidadeEvadidos](title="Evadidos"; record=stats; unit=ms);
-        @statistic[quantidadeAprovados](title="Aprovados"; record=stats; unit=ms);
-        @statistic[quantidadeReprovados](title="Reprovados"; record=stats; unit=ms);
         @statistic[quantidadeEvadidosGeral](title="Evadidos Geral"; record=stats; unit=ms);
-        @statistic[quantidadeAprovadosGeral](title="Aprovados Geral"; record=stats; unit=ms);
-        @statistic[quantidadeReprovadosGeral](title="Reprovados Geral"; record=stats; unit=ms);
+        @statistic[quantidadeRetidosGeral](title="Retidos Geral"; record=stats; unit=ms);
+        @statisticTemplate[evadidosPorPeriodoTemplate](title="Evadidos por Periodo";record=stats;unit=ms);
+		@statisticTemplate[retidosPorPeriodoTemplate](title="Retidos por Periodo";record=stats;unit=ms);
 		@statisticTemplate[evadidosPorSemestreTemplate](title="Evadidos por Semestre";record=stats;unit=ms);
 		@statisticTemplate[retidosPorSemestreTemplate](title="Retidos por Semestre";record=stats;unit=ms);
-		@statisticTemplate[aprovadosPorSemestreTemplate](title="Aprovados por Semestre";record=stats;unit=ms);
-        @statisticTemplate[evadidos_Semestre_periodoTemplate](title="Evadidos_Semestre_Periodo";record=stats;unit=ms);
-        @statisticTemplate[aprovados_Semestre_periodoTemplate](title="Aprovados_Semestre_Periodo";record=stats;unit=ms);
-        @statisticTemplate[retidos_Semestre_periodoTemplate](title="Retidos_Semestre_Periodo";record=stats;unit=ms);
-        @statisticTemplate[turma_Semestre_periodoTemplate](title="Turma_Semestre_Periodo";record=stats;unit=ms);
+        @statisticTemplate[evadidosSemestrePeriodoTemplate](title="Evadidos Semestre Periodo";record=stats;unit=ms);
+        @statisticTemplate[retidosSemestrePeriodoTemplate](title="Retidos Semestre Periodo";record=stats;unit=ms);
 		
         int capacidadeTurma;
         double probabilidadeEvasao = default (30.0);
@@ -72,7 +64,7 @@ network Curso
    	@statistic[totalFormados](title="Formados"; record=stats; unit=ms);
     @statistic[totalEvadidos](title="Total Evadidos"; record=stats; unit=ms);
     @statistic[totalAlunos](title="Total Alunos"; record=stats; unit=ms);
-    int capacidadeTurma = 100;
+    int capacidadeTurma = 200;
     types:
         channel D extends ned.DatarateChannel
         {

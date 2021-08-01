@@ -30,10 +30,6 @@ void Fim::handleMessage(cMessage *msg) {
     aluno->setSaida(time-6);
     emit(totalFormados, 1);
     emit(quantidadePeriodos, aluno->getQuantidadeSemestresCursados(time - 6));
-    if(aluno->getQuantidadeSemestresCursados(time - 6) > 21){
-        EV << "Quantidade: " << aluno->getQuantidadeSemestresCursados(time - 6) << endl;
-    }
-
     cancelAndDelete(msg);
 }
 

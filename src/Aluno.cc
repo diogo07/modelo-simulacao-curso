@@ -94,6 +94,15 @@ int Aluno::getReprovacoes(int index){
     return this->reprovacoes[index];
 }
 
+int Aluno::getTotalReprovacoes(){
+    int total = 0;
+    for (int i = 0; i > 10; i++){
+        total += this->reprovacoes[i];
+    }
+
+    return total;
+}
+
 bool Aluno::getNovato(){
     return this->novato;
 }
