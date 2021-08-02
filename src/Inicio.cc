@@ -9,9 +9,9 @@ using namespace omnetpp;
 class Inicio : public cSimpleModule {
   private:
     int portaSaida = 0;
-    int contador = 0;
     int tamanhoTurma = 40;
     int numeroExecucoes = 10000;
+    bool executarPorTempoIndeterminado = false;
     simsignal_t totalAlunos;
   protected:
     virtual void initialize() override;
@@ -24,21 +24,23 @@ Define_Module(Inicio);
 void Inicio::initialize() {
     totalAlunos = registerSignal("totalAlunos");
 
-    for(int i = 0; i < numeroExecucoes; i++){
-        enviarTurma(i);
+    if(executarPorTempoIndeterminado){
+        enviarTurma(0);
+    } else {
+        for (int i = 0; i < numeroExecucoes; i++) {
+            enviarTurma(i);
+        }
     }
+
 }
 
 void Inicio::handleMessage(cMessage *msg) {
 
     Aluno *aluno = dynamic_cast<Aluno*>(msg);
 
-
-    if (portaSaida == tamanhoTurma - 1) {
-
-        if((contador / tamanhoTurma) < numeroExecucoes){
-            portaSaida = 0;
-        }
+    if(portaSaida == (tamanhoTurma - 1)){
+        portaSaida = 0;
+        executarPorTempoIndeterminado ? enviarTurma(((int)aluno->getEntrada()/6)+1) : 0;
     } else {
         portaSaida++;
     }
@@ -47,17 +49,12 @@ void Inicio::handleMessage(cMessage *msg) {
 
 }
 
-void Inicio::enviarTurma(int indice) {
+void Inicio::enviarTurma(int tempo) {
     for (int i = 0; i < tamanhoTurma; i++) {
-        Aluno *aluno = new Aluno(contador, "aluno "+std::to_string(contador));
-        aluno->setEvadido(0);
-        aluno->setFaltas(0);
-        aluno->setRaca(2);
+        Aluno *aluno = new Aluno();
         aluno->setNovato(true);
-        aluno->setEntrada(indice * 6.0);
-
-        scheduleAt((SimTime)(indice * 6.0), aluno);
-
+        aluno->setEntrada(tempo * 6.0);
+        scheduleAt((SimTime)(tempo * 6.0), aluno);
         emit(totalAlunos, 1);
     }
 }

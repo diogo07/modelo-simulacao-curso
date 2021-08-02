@@ -1,6 +1,7 @@
 .settings/
 out/
 curso.exe
+simulacao_curso.exe
 Makefile
 .cproject
 .project
