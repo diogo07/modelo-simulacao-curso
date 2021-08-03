@@ -40,6 +40,7 @@ class Periodo : public cSimpleModule {
         virtual void emitirDadosDoPeriodo();
         virtual void processarAluno(Aluno *aluno);
         virtual void registerSignalArray();
+        virtual float randomValue();
 
     public:
         virtual ~Periodo() override;
@@ -54,7 +55,7 @@ class Periodo : public cSimpleModule {
         int indice; // O ÍNDICE EQUIVALE AO PERÍODO, EX: INDICE 1 = 1º PERIODO
         int portaSaida;
         int portaSaidaInicialRetencao;
-        int analiseCurso = 1; // 0 - GERAL, 1 - BSI, 2 - BCC
+        int analiseCurso = 0; // 0 - GERAL, 1 - BSI, 2 - BCC
         int analiseTipo = 0; // 0 - POR PERIODO, 1 - POR SEMESTRE, 2 - SEMESTRE E PERIODO
 
 //      ESPECÍFICOS

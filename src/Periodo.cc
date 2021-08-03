@@ -154,9 +154,13 @@ bool Periodo::compare(Aluno *aluno1, Aluno *aluno2) {
     }
 }
 
+float Periodo::randomValue(){
+    return ((float)(std::rand() % 1000)) / 1000;
+}
+
 bool Periodo::evadir(int semestre) {
 
-    float rNumber = (std::rand() % 1000) * 0.001;
+    float rNumber = randomValue();
 
     if (analiseTipo == 0) {
         float probEvasao = (float) probDeEvasaoPeriodo[analiseCurso][indice - 1];
@@ -177,7 +181,7 @@ bool Periodo::evadir(int semestre) {
 
 bool Periodo::reter(int semestre) {
 
-    float rNumber = (std::rand() % 1000) * 0.001;
+    float rNumber = randomValue();
 
     if (analiseTipo == 0) {
 
@@ -226,6 +230,7 @@ void Periodo::registerSignalArray() {
     }
 
 
+    //    INICIA VARIÁVEIS DE STATISTICS DE EVASÃO E RETENÇÃO POR SEMESTRE
     for (int s = 0; s < semestres; ++s) {
         char signalNameEvadidosSemestre[32];
         char signalNameRetidosSemestre[32];
@@ -248,6 +253,7 @@ void Periodo::registerSignalArray() {
 
 
 
+    //    INICIA VARIÁVEIS DE STATISTICS DE EVASÃO E RETENÇÃO POR PERÍODO E SEMESTRE
    for (int sem = 0; sem < semestres; ++sem) {
 
         for (int pe = 0; pe < periodos; ++pe) {
@@ -273,139 +279,6 @@ void Periodo::registerSignalArray() {
         }
     }
 
-
-
-
-//    for (int g = 0; g < periodos; ++g) {
-//        char signalNameG[32];
-//        sprintf(signalNameG, "retidosPorPeriodo%d", g);
-//        simsignal_t signalG = registerSignal(signalNameG);
-//        cProperty *statisticTemplateG = getProperties()->get(
-//                "statisticTemplate", "retidosPorPeriodoTemplate");
-//        getEnvir()->addResultRecorders(this, signalG, signalNameG,
-//                statisticTemplateG);
-//        retidosPorPeriodo[g] = signalG;
-//    }
-//
-//
-//    for (int h = 0; h < periodos; ++h) {
-//        char signalNameH[32];
-//        sprintf(signalNameH, "evadidosPorPeriodo%d", h);
-//        simsignal_t signalH = registerSignal(signalNameH);
-//        cProperty *statisticTemplateH = getProperties()->get(
-//                "statisticTemplate", "evadidosPorPeriodoTemplate");
-//        getEnvir()->addResultRecorders(this, signalH, signalNameH,
-//                statisticTemplateH);
-//        evadidosPorPeriodo[h] = signalH;
-//    }
-//
-//
-//    for (int i = 0; i < semestres; ++i) {
-//        char signalNameI[32];
-//        sprintf(signalNameI, "evadidosPorSemestre%d", i);
-//        simsignal_t signalI = registerSignal(signalNameI);
-//        cProperty *statisticTemplateI = getProperties()->get(
-//                "statisticTemplate", "evadidosPorSemestreTemplate");
-//        getEnvir()->addResultRecorders(this, signalI, signalNameI,
-//                statisticTemplateI);
-//        evadidosPorSemestre[i] = signalI;
-//    }
-//
-//    for (int j = 0; j < semestres; ++j) {
-//
-//        char signalNameJ[32];
-//        sprintf(signalNameJ, "retidosPorSemestre%d", j);
-//        simsignal_t signalJ = registerSignal(signalNameJ);
-//        cProperty *statisticTemplateJ = getProperties()->get(
-//                "statisticTemplate", "retidosPorSemestreTemplate");
-//        getEnvir()->addResultRecorders(this, signalJ, signalNameJ,
-//                statisticTemplateJ);
-//        retidosPorSemestre[j] = signalJ;
-//    }
-//
-//    for (int k = 0; k < semestres; ++k) {
-//
-//        char signalNameK[32];
-//        sprintf(signalNameK, "aprovadosPorSemestre%d", k);
-//        simsignal_t signalK = registerSignal(signalNameK);
-//        cProperty *statisticTemplateK = getProperties()->get(
-//                "statisticTemplate", "aprovadosPorSemestreTemplate");
-//        getEnvir()->addResultRecorders(this, signalK, signalNameK,
-//                statisticTemplateK);
-//        aprovadosPorSemestre[k] = signalK;
-//    }
-//
-//    for (int t = 0; t < semestres; ++t) {
-//
-//        char signalNameT[32];
-//        sprintf(signalNameT, "graduadosPorSemestre%d", t);
-//        simsignal_t signalT = registerSignal(signalNameT);
-//        cProperty *statisticTemplateT = getProperties()->get(
-//                "statisticTemplate", "graduadosPorSemestreTemplate");
-//        getEnvir()->addResultRecorders(this, signalT, signalNameT,
-//                statisticTemplateT);
-//        aprovadosPorSemestre[t] = signalT;
-//    }
-//
-//    for (int l = 0; l < semestres; ++l) {
-//
-//        for (int m = 0; m < periodos; ++m) {
-//
-//            char signalNameLM[32];
-//            sprintf(signalNameLM, "evadidos_Semestre_periodo%d_%d", l, m);
-//            simsignal_t signalLM = registerSignal(signalNameLM);
-//            cProperty *statisticTemplateLM = getProperties()->get(
-//                    "statisticTemplate", "evadidos_Semestre_periodoTemplate");
-//            getEnvir()->addResultRecorders(this, signalLM, signalNameLM,
-//                    statisticTemplateLM);
-//            evadidos_Semestre_periodo[l][m] = signalLM;
-//        }
-//    }
-//
-//    for (int n = 0; n < semestres; ++n) {
-//
-//        for (int o = 0; o < periodos; ++o) {
-//
-//            char signalNameNO[32];
-//            sprintf(signalNameNO, "aprovados_Semestre_periodo%d_%d", n, o);
-//            simsignal_t signalNO = registerSignal(signalNameNO);
-//            cProperty *statisticTemplateNO = getProperties()->get(
-//                    "statisticTemplate", "aprovados_Semestre_periodoTemplate");
-//            getEnvir()->addResultRecorders(this, signalNO, signalNameNO,
-//                    statisticTemplateNO);
-//            aprovados_Semestre_periodo[n][o] = signalNO;
-//        }
-//    }
-//
-//    for (int p = 0; p < semestres; ++p) {
-//
-//        for (int q = 0; q < periodos; ++q) {
-//
-//            char signalNamePQ[32];
-//            sprintf(signalNamePQ, "retidos_Semestre_periodo%d_%d", p, q);
-//            simsignal_t signalPQ = registerSignal(signalNamePQ);
-//            cProperty *statisticTemplatePQ = getProperties()->get(
-//                    "statisticTemplate", "retidos_Semestre_periodoTemplate");
-//            getEnvir()->addResultRecorders(this, signalPQ, signalNamePQ,
-//                    statisticTemplatePQ);
-//            retidos_Semestre_periodo[p][q] = signalPQ;
-//        }
-//    }
-//
-//    for (int r = 0; r < semestres; ++r) {
-//
-//        for (int s = 0; s < periodos; ++s) {
-//
-//            char signalNameRS[32];
-//            sprintf(signalNameRS, "turma_Semestre_periodo%d_%d", r, s);
-//            simsignal_t signalRS = registerSignal(signalNameRS);
-//            cProperty *statisticTemplateRS = getProperties()->get(
-//                    "statisticTemplate", "turma_Semestre_periodoTemplate");
-//            getEnvir()->addResultRecorders(this, signalRS, signalNameRS,
-//                    statisticTemplateRS);
-//            turma_Semestre_periodo[r][s] = signalRS;
-//        }
-//    }
 }
 
 void Periodo::emitirDadosDoPeriodo() {

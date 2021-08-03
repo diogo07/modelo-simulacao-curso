@@ -11,7 +11,7 @@ class Inicio : public cSimpleModule {
     int portaSaida = 0;
     int tamanhoTurma = 40;
     int numeroExecucoes = 10000;
-    bool executarPorTempoIndeterminado = false;
+    bool executarPorTempoIndeterminado = true;
     simsignal_t totalAlunos;
   protected:
     virtual void initialize() override;
@@ -40,7 +40,9 @@ void Inicio::handleMessage(cMessage *msg) {
 
     if(portaSaida == (tamanhoTurma - 1)){
         portaSaida = 0;
-        executarPorTempoIndeterminado ? enviarTurma(((int)aluno->getEntrada()/6)+1) : 0;
+        if(executarPorTempoIndeterminado){
+            enviarTurma(((int)aluno->getEntrada()/6)+1);
+        }
     } else {
         portaSaida++;
     }
