@@ -159,7 +159,6 @@ bool Periodo::compare(Aluno *aluno1, Aluno *aluno2) {
 
 float Periodo::randomValue(){
     return (float) rand() / (float) RAND_MAX;
-//    return ((float)(rand() % 10000)) / 10000;
 }
 
 bool Periodo::evadir(int semestre) {
@@ -168,17 +167,14 @@ bool Periodo::evadir(int semestre) {
 
     if (analiseTipo == 0) {
         float probEvasao = (float) probDeEvasaoPeriodo[analiseCurso][indice - 1];
-//        EV << indice << " - " << probEvasao << " - " << rNumber << endl;
         return rNumber <= probEvasao;
 
     } else if (analiseTipo == 1) {
         float probEvasao = (float) probDeEvasaoSemestre[analiseCurso][semestre - 1];
-//        EV << semestre << " - " << probEvasao << " - " << rNumber << endl;
         return rNumber <= probEvasao;
 
     } else {
         float probEvasao = (float) probDeEvasaoPeriodoSemestre[analiseCurso][indice - 1][semestre - 1];
-//        EV << "[" << semestre << "," << indice << " - " << probEvasao << " - " << rNumber << endl;
         return rNumber <= probEvasao;
     }
 
