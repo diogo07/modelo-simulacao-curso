@@ -118,6 +118,9 @@ void Periodo::avaliarAluno(Aluno *aluno) {
             emit(totalEvadidos, 1);
             cancelAndDelete(aluno);
         } else {
+            if(indice == 10) {
+                emit(graduadosPorSemestre[quantidadeSemestres - 1], 1);
+            }
             send(aluno, "saida", portaSaida);
         }
 
@@ -231,25 +234,31 @@ void Periodo::registerSignalArray() {
     }
 
 
-    //    INICIA VARIÁVEIS DE STATISTICS DE EVASÃO E RETENÇÃO POR SEMESTRE
+    //    INICIA VARIÁVEIS DE STATISTICS DE EVASÃO, GRADUAÇÃO E RETENÇÃO POR SEMESTRE
     for (int s = 0; s < semestres; ++s) {
         char signalNameEvadidosSemestre[32];
         char signalNameRetidosSemestre[32];
+        char signalNameGraduadosSemestre[32];
 
         sprintf(signalNameEvadidosSemestre, "evadidosPorSemestre%d", s);
         sprintf(signalNameRetidosSemestre, "retidosPorSemestre%d", s);
+        sprintf(signalNameGraduadosSemestre, "graduadosPorSemestre%d", s);
 
         simsignal_t signalEvadidosSemestre = registerSignal(signalNameEvadidosSemestre);
         simsignal_t signalRetidosSemestre = registerSignal(signalNameRetidosSemestre);
+        simsignal_t signalGraduadosSemestre = registerSignal(signalNameGraduadosSemestre);
 
         cProperty *statisticTemplateEvadidosSemestre = getProperties()->get("statisticTemplate", "evadidosPorSemestreTemplate");
         cProperty *statisticTemplateRetidosSemestre = getProperties()->get("statisticTemplate", "retidosPorSemestreTemplate");
+        cProperty *statisticTemplateGraduadosSemestre = getProperties()->get("statisticTemplate", "graduadosPorSemestreTemplate");
 
         getEnvir()->addResultRecorders(this, signalEvadidosSemestre, signalNameEvadidosSemestre, statisticTemplateEvadidosSemestre);
         getEnvir()->addResultRecorders(this, signalRetidosSemestre, signalNameRetidosSemestre, statisticTemplateRetidosSemestre);
+        getEnvir()->addResultRecorders(this, signalGraduadosSemestre, signalNameGraduadosSemestre, statisticTemplateGraduadosSemestre);
 
         evadidosPorSemestre[s] = signalEvadidosSemestre;
         retidosPorSemestre[s] = signalRetidosSemestre;
+        graduadosPorSemestre[s] = signalGraduadosSemestre;
    }
 
 
