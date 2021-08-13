@@ -23,6 +23,7 @@ void Periodo::initialize() {
 
     capacidadeTurma = 199;
     portaSaidaInicialRetencao = par("capacidadeTurma");
+    numeroPeriodos = par("numeroPeriodos");
     indice = par("numero");
     tempo = indice * 6.0;
     portaSaida = 0;
@@ -118,7 +119,7 @@ void Periodo::avaliarAluno(Aluno *aluno) {
             emit(totalEvadidos, 1);
             cancelAndDelete(aluno);
         } else {
-            if(indice == 10) {
+            if(indice == numeroPeriodos) {
                 emit(graduadosPorSemestre[quantidadeSemestres - 1], 1);
             }
             send(aluno, "saida", portaSaida);
