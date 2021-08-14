@@ -82,7 +82,7 @@ void Periodo::processarAluno(Aluno *aluno) {
 void Periodo::avaliarAluno(Aluno *aluno) {
     aluno->setNovato(false);
     int quantidadeSemestres = (int) (tempo.dbl() - aluno->getEntrada()) / 6;
-
+    emit(totalSemestrePeriodo[quantidadeSemestres - 1][indice - 1], 1);
     if (reter(quantidadeSemestres)) {
         retidosGeral++;
         emit(retidosPorPeriodo[indice - 1], 1);
@@ -264,28 +264,34 @@ void Periodo::registerSignalArray() {
 
 
 
-    //    INICIA VARIÁVEIS DE STATISTICS DE EVASÃO E RETENÇÃO POR PERÍODO E SEMESTRE
+    //    INICIA VARIÁVEIS DE STATISTICS DE EVASÃO E RETENÇÃO POR PERÍODO E SEMESTRE, E TOTAL DE ALUNOS POR SEMESTRE E PERIODO
    for (int sem = 0; sem < semestres; ++sem) {
 
         for (int pe = 0; pe < periodos; ++pe) {
 
             char signalNameEvadidosSemestrePeriodo[32];
             char signalNameRetidosSemestrePeriodo[32];
+            char signalNameTotalSemestrePeriodo[32];
 
             sprintf(signalNameEvadidosSemestrePeriodo, "evadidosSemestrePeriodo%d_%d", sem, pe);
             sprintf(signalNameRetidosSemestrePeriodo, "retidosSemestrePeriodo%d_%d", sem, pe);
+            sprintf(signalNameTotalSemestrePeriodo, "totalSemestrePeriodo%d_%d", sem, pe);
 
             simsignal_t signalEvadidosSemestrePeriodo = registerSignal(signalNameEvadidosSemestrePeriodo);
             simsignal_t signalRetidosSemestrePeriodo = registerSignal(signalNameRetidosSemestrePeriodo);
+            simsignal_t signalTotalSemestrePeriodo = registerSignal(signalNameTotalSemestrePeriodo);
 
             cProperty *statisticTemplateEvadidosSemestrePeriodo = getProperties()->get("statisticTemplate", "evadidosSemestrePeriodoTemplate");
             cProperty *statisticTemplateRetidosSemestrePeriodo = getProperties()->get("statisticTemplate", "retidosSemestrePeriodoTemplate");
+            cProperty *statisticTemplateTotalSemestrePeriodo = getProperties()->get("statisticTemplate", "totalSemestrePeriodoTemplate");
 
             getEnvir()->addResultRecorders(this, signalEvadidosSemestrePeriodo, signalNameEvadidosSemestrePeriodo, statisticTemplateEvadidosSemestrePeriodo);
             getEnvir()->addResultRecorders(this, signalRetidosSemestrePeriodo, signalNameRetidosSemestrePeriodo, statisticTemplateRetidosSemestrePeriodo);
+            getEnvir()->addResultRecorders(this, signalTotalSemestrePeriodo, signalNameTotalSemestrePeriodo, statisticTemplateTotalSemestrePeriodo);
 
             evadidosSemestrePeriodo[sem][pe] = signalEvadidosSemestrePeriodo;
             retidosSemestrePeriodo[sem][pe] = signalRetidosSemestrePeriodo;
+            totalSemestrePeriodo[sem][pe] = signalTotalSemestrePeriodo;
 
         }
     }

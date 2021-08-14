@@ -16,6 +16,7 @@ simple Periodo
         @signal[graduadosPorSemestre*](type=simtime_t);
         @signal[evadidosSemestrePeriodo*](type=simtime_t);
         @signal[retidosSemestrePeriodo*](type=simtime_t);
+        @signal[totalSemestrePeriodo*](type=simtime_t);
         @statistic[evadidosPorPeriodoTemplate](title="Evadidos por Periodo";record=stats;unit=ms);
         @statistic[retidosPorPeriodoTemplate](title="Retidos por Periodo";record=stats;unit=ms);
         @statistic[tamanhoTurma](title="Turma"; record=stats; unit=ms);
@@ -29,6 +30,7 @@ simple Periodo
 		@statisticTemplate[graduadosPorSemestreTemplate](title="Graduados por Semestre";record=stats;unit=ms);
         @statisticTemplate[evadidosSemestrePeriodoTemplate](title="Evadidos Semestre Periodo";record=stats;unit=ms);
         @statisticTemplate[retidosSemestrePeriodoTemplate](title="Retidos Semestre Periodo";record=stats;unit=ms);
+        @statisticTemplate[totalSemestrePeriodoTemplate](title="Total Semestre Periodo";record=stats;unit=ms);
 		
         int capacidadeTurma;
         int numero;
