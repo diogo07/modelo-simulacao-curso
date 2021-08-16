@@ -82,7 +82,6 @@ void Periodo::processarAluno(Aluno *aluno) {
 void Periodo::avaliarAluno(Aluno *aluno) {
     aluno->setNovato(false);
     int quantidadeSemestres = (int) (tempo.dbl() - aluno->getEntrada()) / 6;
-    emit(totalSemestrePeriodo[quantidadeSemestres - 1][indice - 1], 1);
     if (reter(quantidadeSemestres)) {
         retidosGeral++;
         emit(retidosPorPeriodo[indice - 1], 1);
@@ -119,6 +118,7 @@ void Periodo::avaliarAluno(Aluno *aluno) {
             emit(totalEvadidos, 1);
             cancelAndDelete(aluno);
         } else {
+            emit(totalSemestrePeriodo[quantidadeSemestres - 1][indice - 1], 1);
             if(indice == numeroPeriodos) {
                 emit(graduadosPorSemestre[quantidadeSemestres - 1], 1);
             }
