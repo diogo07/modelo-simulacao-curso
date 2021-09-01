@@ -67,7 +67,7 @@ void Periodo::processarAluno(Aluno *aluno) {
 //                ((alunoDaTurma->getQuantidadeSemestresCursados(tempo.dbl())
 //                        - indice + 10) <= 21);
 //        if (possibilidadeDeGraduar) {
-            avaliarAluno(alunoDaTurma);
+            avaliarAlunoPorEvasaoEretencao(alunoDaTurma);
 //        } else {
 //            evadidosGeral++;
 //            emit(evadidosPorPeriodo[indice - 1], 1);
@@ -126,6 +126,40 @@ void Periodo::avaliarAluno(Aluno *aluno) {
         }
 
     }
+}
+
+void Periodo::avaliarAlunoPorEvasaoEretencao(Aluno *aluno) {
+    aluno->setNovato(false);
+    int quantidadeSemestres = (int) (tempo.dbl() - aluno->getEntrada()) / 6;
+
+    if (evadir(quantidadeSemestres)) {
+        evadidosGeral++;
+        emit(evadidosPorPeriodo[indice - 1], 1);
+        emit(evadidosPorSemestre[quantidadeSemestres - 1], 1);
+        emit(evadidosSemestrePeriodo[quantidadeSemestres - 1][indice - 1], 1);
+        emit(totalEvadidos, 1);
+        cancelAndDelete(aluno);
+    } else {
+
+        if (reter(quantidadeSemestres)) {
+            retidosGeral++;
+            emit(retidosPorPeriodo[indice - 1], 1);
+            emit(retidosPorSemestre[quantidadeSemestres - 1], 1);
+            emit(retidosSemestrePeriodo[quantidadeSemestres - 1][indice - 1],
+                    1);
+            aluno->setReprovacoes(indice - 1,
+                    aluno->getReprovacoes(indice - 1) + 1);
+            send(aluno, "saida", portaSaidaInicialRetencao + capacidadeTurma);
+        } else {
+            emit(totalSemestrePeriodo[quantidadeSemestres - 1][indice - 1], 1);
+            if (indice == numeroPeriodos) {
+                emit(graduadosPorSemestre[quantidadeSemestres - 1], 1);
+            }
+            send(aluno, "saida", portaSaida);
+        }
+
+    }
+
 }
 
 void Periodo::adicionarNaTurma(Aluno *aluno) {
