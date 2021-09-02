@@ -7,6 +7,10 @@ simple Periodo
         @display("i=block/network;");
         @signal[tamanhoTurma](type="long");
         @signal[tamanhoFilaEspera](type="long");
+//        @signal[evadidos](type="long");
+//        @signal[retidos](type="long");
+//        @signal[graduados](type="long");
+//        @signal[desvinculados](type="long");
         @signal[quantidadeEvadidosGeral](type="long");
         @signal[quantidadeRetidosGeral](type="long");
         @signal[evadidosPorPeriodo*](type=simtime_t);
@@ -69,7 +73,7 @@ network Curso
     @statistic[totalEvadidos](title="Total Evadidos"; record=stats; unit=ms);
     @statistic[totalAlunos](title="Total Alunos"; record=stats; unit=ms);
     int capacidadeTurma = 200;
-    int numeroPeriodos = 10;
+    int numeroPeriodos = 9;
     types:
         channel D extends ned.DatarateChannel
         {
