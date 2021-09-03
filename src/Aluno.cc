@@ -23,6 +23,14 @@ void Aluno::setReprovacoes(int index, int reprovacoes){
     this->reprovacoes[index] = reprovacoes;
 }
 
+void Aluno::setEntradaPeriodo(int index, int entrada){
+    this->entradaPeriodo[index] = entrada;
+}
+
+void Aluno::setSaidaPeriodo(int index, int saida){
+    this->saidaPeriodo[index] = saida;
+}
+
 void Aluno::setNovato(bool novato){
     this->novato = novato;
 }
@@ -45,6 +53,14 @@ int Aluno::getQtdMatriculas(){
 
 int Aluno::getReprovacoes(int index){
     return this->reprovacoes[index];
+}
+
+int Aluno::getEntradaPeriodo(int index){
+    return this->entradaPeriodo[index];
+}
+
+int Aluno::getSaidaPeriodo(int index){
+    return this->saidaPeriodo[index];
 }
 
 int Aluno::getTotalReprovacoes(){

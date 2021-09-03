@@ -24,6 +24,7 @@ class Periodo : public cSimpleModule {
         simsignal_t evadidosSemestrePeriodo[21][10];
         simsignal_t retidosSemestrePeriodo[21][10];
         simsignal_t totalSemestrePeriodo[21][10];
+        simsignal_t duracaoTransicaoPeriodo[10][10];
 
 
         simsignal_t totalEvadidos;
@@ -55,7 +56,7 @@ class Periodo : public cSimpleModule {
         int numeroPeriodos; // INDICA A QUANTIDADE DE PER�ODOS QUE O FORMATO DE CURSO POSSUI
         int portaSaida;
         int portaSaidaInicialRetencao;
-        int analiseCurso = 2; // 0 - GERAL, 1 - BSI, 2 - BCC
+        int analiseCurso = 1; // 0 - GERAL, 1 - BSI, 2 - BCC
         int analiseTipo = 1; // 0 - POR PERIODO, 1 - POR SEMESTRE, 2 - SEMESTRE E PERIODO
 
 //      ESPEC�FICOS

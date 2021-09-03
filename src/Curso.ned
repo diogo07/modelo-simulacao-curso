@@ -7,10 +7,6 @@ simple Periodo
         @display("i=block/network;");
         @signal[tamanhoTurma](type="long");
         @signal[tamanhoFilaEspera](type="long");
-//        @signal[evadidos](type="long");
-//        @signal[retidos](type="long");
-//        @signal[graduados](type="long");
-//        @signal[desvinculados](type="long");
         @signal[quantidadeEvadidosGeral](type="long");
         @signal[quantidadeRetidosGeral](type="long");
         @signal[evadidosPorPeriodo*](type=simtime_t);
@@ -21,6 +17,7 @@ simple Periodo
         @signal[evadidosSemestrePeriodo*](type=simtime_t);
         @signal[retidosSemestrePeriodo*](type=simtime_t);
         @signal[totalSemestrePeriodo*](type=simtime_t);
+        @signal[duracaoTransicaoPeriodo*](type=simtime_t);
         @statistic[evadidosPorPeriodoTemplate](title="Evadidos por Periodo";record=stats;unit=ms);
         @statistic[retidosPorPeriodoTemplate](title="Retidos por Periodo";record=stats;unit=ms);
         @statistic[tamanhoTurma](title="Turma"; record=stats; unit=ms);
@@ -35,6 +32,7 @@ simple Periodo
         @statisticTemplate[evadidosSemestrePeriodoTemplate](title="Evadidos Semestre Periodo";record=stats;unit=ms);
         @statisticTemplate[retidosSemestrePeriodoTemplate](title="Retidos Semestre Periodo";record=stats;unit=ms);
         @statisticTemplate[totalSemestrePeriodoTemplate](title="Total Semestre Periodo";record=stats;unit=ms);
+        @statisticTemplate[duracaoTransicaoPeriodoTemplate](title="Duração Transição Periodo";record=stats;unit=ms);
 		
         int capacidadeTurma;
         int numero;
@@ -73,7 +71,7 @@ network Curso
     @statistic[totalEvadidos](title="Total Evadidos"; record=stats; unit=ms);
     @statistic[totalAlunos](title="Total Alunos"; record=stats; unit=ms);
     int capacidadeTurma = 200;
-    int numeroPeriodos = 9;
+    int numeroPeriodos = 10;
     types:
         channel D extends ned.DatarateChannel
         {

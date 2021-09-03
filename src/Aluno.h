@@ -13,6 +13,8 @@ private:
     double entrada;
     double saida;
     int reprovacoes [10] = {};
+    int entradaPeriodo [10] = {};
+    int saidaPeriodo [10] = {};
 public:
     Aluno();
     virtual ~Aluno();
@@ -20,6 +22,8 @@ public:
     virtual void setRaca(int raca);
 
     virtual void setReprovacoes(int index, int reprovacoes);
+    virtual void setEntradaPeriodo(int index, int entrada);
+    virtual void setSaidaPeriodo(int index, int saida);
     virtual void setNovato(bool novato);
 
     virtual void setEntrada(double entrada);
@@ -28,6 +32,8 @@ public:
     virtual int getRaca();
 
     virtual int getReprovacoes(int index);
+    virtual int getEntradaPeriodo(int index);
+    virtual int getSaidaPeriodo(int index);
     virtual int getTotalReprovacoes();
     virtual bool getNovato();
     virtual double getEntrada();
