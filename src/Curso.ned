@@ -71,7 +71,7 @@ network Curso
     @statistic[totalEvadidos](title="Total Evadidos"; record=stats; unit=ms);
     @statistic[totalAlunos](title="Total Alunos"; record=stats; unit=ms);
     int capacidadeTurma = 200;
-    int numeroPeriodos = 9;
+    int numeroPeriodos = 10;
     types:
         channel D extends ned.DatarateChannel
         {
