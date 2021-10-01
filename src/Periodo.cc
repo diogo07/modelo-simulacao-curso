@@ -137,6 +137,11 @@ void Periodo::avaliarAluno(Aluno *aluno) {
 void Periodo::avaliarAlunoPorEvasaoEretencao(Aluno *aluno) {
     aluno->setNovato(false);
     int duracaoVinculo = (int) (tempo.dbl() - aluno->getEntrada()) / 6;
+
+    if(duracaoVinculo > 21){
+        duracaoVinculo = 21;
+    }
+
     if (aluno->getEntradaPeriodo(periodoAtual - 1) == 0) {
         aluno->setEntradaPeriodo(periodoAtual - 1, (int) tempo.dbl());
     }
@@ -161,6 +166,11 @@ void Periodo::avaliarAlunoPorEvasaoEretencao(Aluno *aluno) {
             aluno->setSaidaPeriodo(periodoAtual - 1, (int) tempo.dbl());
             emit(totalSemestrePeriodo[duracaoVinculo - 1][periodoAtual - 1], 1);
             int duracao = (int) ((aluno->getSaidaPeriodo(periodoAtual - 1) - aluno->getEntradaPeriodo(periodoAtual - 1))/6);
+
+            if(duracao > 21){
+                duracao = 21;
+            }
+
             emit(duracaoTransicaoPeriodo[duracao][periodoAtual - 1], 1);
             if (periodoAtual == numeroPeriodos) {
                 emit(graduadosPorSemestre[duracaoVinculo - 1], 1);
@@ -260,7 +270,7 @@ bool Periodo::reter(int duracaoVinculo) {
 
 void Periodo::registerSignalArray() {
 
-    int semestres = 100;
+    int semestres = 21;
     int periodos = 10;
 
     //    INICIA VARIÁVEIS DE STATISTICS DE EVASÃO E RETENÇÃO POR PERÍODO
