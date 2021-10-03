@@ -57,7 +57,7 @@ class Periodo : public cSimpleModule {
         int portaSaida;
         int portaSaidaInicialRetencao;
         int analiseCurso = 1; // 0 - GERAL, 1 - BSI, 2 - BCC
-        int analiseTipo = 2; // 0 - POR PERIODO, 1 - POR SEMESTRE, 2 - SEMESTRE E PERIODO
+        int analiseTipo = 1; // 0 - POR PERIODO, 1 - POR SEMESTRE, 2 - SEMESTRE E PERIODO
 
 //      ESPEC�FICOS
         int contadorDeAlunosNaTurma;

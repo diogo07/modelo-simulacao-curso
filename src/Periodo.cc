@@ -138,15 +138,11 @@ void Periodo::avaliarAlunoPorEvasaoEretencao(Aluno *aluno) {
     aluno->setNovato(false);
     int duracaoVinculo = (int) (tempo.dbl() - aluno->getEntrada()) / 6;
 
-    if(duracaoVinculo > 21){
-        duracaoVinculo = 21;
-    }
-
     if (aluno->getEntradaPeriodo(periodoAtual - 1) == 0) {
         aluno->setEntradaPeriodo(periodoAtual - 1, (int) tempo.dbl());
     }
     EV << "PERIODO: " << periodoAtual << ", SEMESTRE: " << duracaoVinculo << endl;
-    if (evadir(duracaoVinculo)) {
+    if (duracaoVinculo == 21 || evadir(duracaoVinculo)) {
         evadidosGeral++;
         emit(evadidosPorPeriodo[periodoAtual - 1], 1);
         emit(evadidosPorSemestre[duracaoVinculo - 1], 1);
@@ -166,10 +162,6 @@ void Periodo::avaliarAlunoPorEvasaoEretencao(Aluno *aluno) {
             aluno->setSaidaPeriodo(periodoAtual - 1, (int) tempo.dbl());
             emit(totalSemestrePeriodo[duracaoVinculo - 1][periodoAtual - 1], 1);
             int duracao = (int) ((aluno->getSaidaPeriodo(periodoAtual - 1) - aluno->getEntradaPeriodo(periodoAtual - 1))/6);
-
-            if(duracao > 21){
-                duracao = 21;
-            }
 
             emit(duracaoTransicaoPeriodo[duracao][periodoAtual - 1], 1);
             if (periodoAtual == numeroPeriodos) {
