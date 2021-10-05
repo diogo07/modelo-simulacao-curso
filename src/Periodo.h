@@ -47,19 +47,19 @@ class Periodo : public cSimpleModule {
 
     protected:
 
-//      ATRIBUTOS DE CONFIGURAï¿½ï¿½O
+//      ATRIBUTOS DE CONFIGURACAO
         SimTime tempo;
         cQueue turma;
         cQueue filaEspera;
         int capacidadeTurma;
-        int periodoAtual; // O ï¿½NDICE EQUIVALE AO PERï¿½ODO, EX: INDICE 1 = 1ï¿½ PERIODO
-        int numeroPeriodos; // INDICA A QUANTIDADE DE PERï¿½ODOS QUE O FORMATO DE CURSO POSSUI
+        int periodoAtual; // O INDICE EQUIVALE AO PERIODO, EX: INDICE 1 = 1 PERIODO
+        int numeroPeriodos; // INDICA A QUANTIDADE DE PERIODOS QUE O FORMATO DE CURSO POSSUI
         int portaSaida;
         int portaSaidaInicialRetencao;
         int analiseCurso = 1; // 0 - GERAL, 1 - BSI, 2 - BCC
         int analiseTipo = 1; // 0 - POR PERIODO, 1 - POR SEMESTRE, 2 - SEMESTRE E PERIODO
 
-//      ESPECï¿½FICOS
+//      ESPECIFICOS
         int contadorDeAlunosNaTurma;
 
 //      GERAL
@@ -72,7 +72,7 @@ class Periodo : public cSimpleModule {
 
 /**
  *
- * METRICAS DE EVASï¿½O E RETENï¿½ï¿½O USADOS NO MODELO
+ * METRICAS DE EVASÃO E RETENÇÃO USADOS NO MODELO
  *
  */
 
