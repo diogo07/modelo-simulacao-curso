@@ -141,8 +141,8 @@ void Periodo::avaliarAlunoPorEvasaoEretencao(Aluno *aluno) {
     if (aluno->getEntradaPeriodo(periodoAtual - 1) == 0) {
         aluno->setEntradaPeriodo(periodoAtual - 1, (int) tempo.dbl());
     }
-    EV << "PERIODO: " << periodoAtual << ", SEMESTRE: " << duracaoVinculo << endl;
-    if (duracaoVinculo == 21 || evadir(duracaoVinculo)) {
+
+    if (evadir(duracaoVinculo)) {
         evadidosGeral++;
         emit(evadidosPorPeriodo[periodoAtual - 1], 1);
         emit(evadidosPorSemestre[duracaoVinculo - 1], 1);
@@ -213,10 +213,6 @@ float Periodo::randomValue(){
 
 bool Periodo::evadir(int duracaoVinculo) {
 
-    if(duracaoVinculo > 21){
-        duracaoVinculo = 21;
-    }
-
     float rNumber = randomValue();
 
     if (analiseTipo == 0) {
@@ -235,10 +231,6 @@ bool Periodo::evadir(int duracaoVinculo) {
 }
 
 bool Periodo::reter(int duracaoVinculo) {
-
-    if(duracaoVinculo > 21){
-        duracaoVinculo = 21;
-    }
 
     float rNumber = randomValue();
 
