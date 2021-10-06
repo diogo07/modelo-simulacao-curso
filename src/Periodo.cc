@@ -18,6 +18,7 @@ void Periodo::initialize() {
     quantidadeEvadidosGeral = registerSignal("quantidadeEvadidosGeral");
     quantidadeRetidosGeral = registerSignal("quantidadeRetidosGeral");
     totalEvadidos = registerSignal("totalEvadidos");
+    totalMatriculas = registerSignal("totalMatriculas");
 
     registerSignalArray();
 
@@ -137,6 +138,7 @@ void Periodo::avaliarAluno(Aluno *aluno) {
 void Periodo::avaliarAlunoPorEvasaoEretencao(Aluno *aluno) {
     aluno->setNovato(false);
     int duracaoVinculo = (int) (tempo.dbl() - aluno->getEntrada()) / 6;
+    duracaoVinculo = duracaoVinculo > 21 ? 21 : duracaoVinculo;
 
     if (aluno->getEntradaPeriodo(periodoAtual - 1) == 0) {
         aluno->setEntradaPeriodo(periodoAtual - 1, (int) tempo.dbl());
@@ -162,6 +164,7 @@ void Periodo::avaliarAlunoPorEvasaoEretencao(Aluno *aluno) {
             aluno->setSaidaPeriodo(periodoAtual - 1, (int) tempo.dbl());
             emit(totalSemestrePeriodo[duracaoVinculo - 1][periodoAtual - 1], 1);
             int duracao = (int) ((aluno->getSaidaPeriodo(periodoAtual - 1) - aluno->getEntradaPeriodo(periodoAtual - 1))/6);
+            duracao = duracao > 20 ? 20 : duracao;
 
             emit(duracaoTransicaoPeriodo[duracao][periodoAtual - 1], 1);
             if (periodoAtual == numeroPeriodos) {
@@ -176,6 +179,7 @@ void Periodo::avaliarAlunoPorEvasaoEretencao(Aluno *aluno) {
 
 void Periodo::adicionarNaTurma(Aluno *aluno) {
     turma.insert(aluno);
+    emit(totalMatriculas, 1);
 //    if (contadorDeAlunosNaTurma == capacidadeTurma) {
 //        filaEspera.insert(aluno);
 //    } else if (filaEspera.getLength() > 0) {

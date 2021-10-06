@@ -66,10 +66,12 @@ network Curso
     @display("bgb=2058.156,1930.248");
     @signal[totalEvadidos](type="long");
     @signal[totalAlunos](type="long");
+    @signal[totalMatriculas](type="long");
     @signal[totalFormados](type="long");
    	@statistic[totalFormados](title="Formados"; record=stats; unit=ms);
     @statistic[totalEvadidos](title="Total Evadidos"; record=stats; unit=ms);
     @statistic[totalAlunos](title="Total Alunos"; record=stats; unit=ms);
+    @statistic[totalMatriculas](title="Total Matriculas"; record=stats; unit=ms);
     int capacidadeTurma = 200;
     int numeroPeriodos = 10;
     types:
