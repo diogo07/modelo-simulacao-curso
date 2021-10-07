@@ -58,8 +58,8 @@ class Periodo : public cSimpleModule {
         int numeroPeriodos; // INDICA A QUANTIDADE DE PERIODOS QUE O FORMATO DE CURSO POSSUI
         int portaSaida;
         int portaSaidaInicialRetencao;
-        int analiseCurso = 1; // 0 - GERAL, 1 - BSI, 2 - BCC
-        int analiseTipo = 0; // 0 - POR PERIODO, 1 - POR SEMESTRE, 2 - SEMESTRE E PERIODO
+        int analiseCurso = 2; // 0 - GERAL, 1 - BSI, 2 - BCC
+        int analiseTipo = 2; // 0 - POR PERIODO, 1 - POR SEMESTRE, 2 - SEMESTRE E PERIODO
 
 //      ESPECIFICOS
         int contadorDeAlunosNaTurma;
@@ -85,15 +85,15 @@ class Periodo : public cSimpleModule {
         //      POR PERIODO
         double probDeEvasaoPeriodo [3][10] = {
                {0.3327, 0.1305, 0.0932, 0.0537, 0.0375, 0.043, 0.0347, 0.0191, 0.014, 0.0086},
-               {0.2398, 0.1067, 0.0828, 0.0654, 0.0385, 0.0421, 0.0382, 0.0109, 0.0045, 0.0196},
-               {0.2407, 0.1173, 0.072, 0.0287, 0.0194, 0.0283, 0.0376, 0.0075, 0.0056, 0.0}
+               {0.3767, 0.1493, 0.0828, 0.0654, 0.0385, 0.0421, 0.0382, 0.0109, 0.0045, 0.0196},
+               {0.3636, 0.1747, 0.072, 0.0287, 0.0194, 0.0283, 0.0376, 0.0075, 0.0056, 0.0}
         };
 
 
         double probDeRetencaoPeriodo [3][10] = {
                 {0.9367, 0.6425, 0.6671, 0.601, 0.6188, 0.6199, 0.6358, 0.6485, 0.7256, 0.7806},
-                {0.5587, 0.5211, 0.5495, 0.5639, 0.521, 0.5561, 0.5534, 0.5628, 0.7602, 0.6569},
-                {0.7068, 0.5255, 0.5387, 0.4467, 0.5465, 0.5283, 0.6573, 0.6165, 0.7095, 0.7679}
+                {0.8602, 0.7289, 0.5495, 0.5639, 0.521, 0.5561, 0.5534, 0.5628, 0.7602, 0.6569},
+                {0.9091, 0.7823, 0.5387, 0.4467, 0.5465, 0.5283, 0.6573, 0.6165, 0.7095, 0.7679}
         };
 
 
