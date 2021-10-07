@@ -7,8 +7,7 @@
 
 using namespace omnetpp;
 
-Periodo::~Periodo() {
-}
+Periodo::~Periodo() {}
 
 Define_Module(Periodo);
 
@@ -54,97 +53,27 @@ void Periodo::handleMessage(cMessage *msg) {
 
 void Periodo::processarAluno(Aluno *aluno) {
 
-    aluno->setNovato(false);
     adicionarNaTurma(aluno);
 
     if (turma.getLength() > 0) {
-
         Aluno *alunoDaTurma = check_and_cast<Aluno*>(turma.pop());
-
         contadorDeAlunosNaTurma++;
-        int quantidadeSemestres = (int) (tempo.dbl()
-                - alunoDaTurma->getEntrada()) / 6;
-//        bool possibilidadeDeGraduar =
-//                ((alunoDaTurma->getQuantidadeSemestresCursados(tempo.dbl())
-//                        - periodoAtual + 10) <= 21);
-//        if (possibilidadeDeGraduar) {
-            avaliarAlunoPorEvasaoEretencao(alunoDaTurma);
-//        } else {
-//            evadidosGeral++;
-//            emit(evadidosPorPeriodo[periodoAtual - 1], 1);
-//            emit(evadidosPorSemestre[quantidadeSemestres - 1], 1);
-//            emit(evadidosSemestrePeriodo[quantidadeSemestres - 1][periodoAtual - 1], 1);
-//            emit(totalEvadidos, 1);
-//            cancelAndDelete(alunoDaTurma);
-//        }
+        int quantidadeSemestres = (int) (tempo.dbl() - alunoDaTurma->getEntrada()) / 6;
+        avaliarAlunoPorEvasaoEretencao(alunoDaTurma);
     }
 }
 
-void Periodo::avaliarAluno(Aluno *aluno) {
-    aluno->setNovato(false);
-    int quantidadeSemestres = (int) (tempo.dbl() - aluno->getEntrada()) / 6;
-    if(aluno->getEntradaPeriodo(periodoAtual - 1) == 0.0){
-        aluno->setEntradaPeriodo(periodoAtual - 1,  (int) tempo.dbl());
-    }
-    if (reter(quantidadeSemestres)) {
-        retidosGeral++;
-        emit(retidosPorPeriodo[periodoAtual - 1], 1);
-        emit(retidosPorSemestre[quantidadeSemestres - 1], 1);
-        emit(retidosSemestrePeriodo[quantidadeSemestres - 1][periodoAtual - 1], 1);
-        aluno->setReprovacoes(periodoAtual - 1, aluno->getReprovacoes(periodoAtual - 1) + 1);
-//        if (aluno->getReprovacoes(periodoAtual - 1) >= 4) {
-//            evadidos++;
-//            emit(totalEvadidos, 1);
-//            emit(evadidosPorSemestre[quantidadeSemestres - 1], 1);
-//            emit(evadidosSemestrePeriodo[quantidadeSemestres - 1][periodoAtual - 1], 1);
-//        } else {
-//        send(aluno, "saida", portaSaidaInicialRetencao + capacidadeTurma);
-//        }
-
-        if (evadir(quantidadeSemestres)) {
-            evadidosGeral++;
-            emit(evadidosPorPeriodo[periodoAtual - 1], 1);
-            emit(evadidosPorSemestre[quantidadeSemestres - 1], 1);
-            emit(evadidosSemestrePeriodo[quantidadeSemestres - 1][periodoAtual - 1], 1);
-            emit(totalEvadidos, 1);
-            cancelAndDelete(aluno);
-        } else {
-            send(aluno, "saida", portaSaidaInicialRetencao + capacidadeTurma);
-        }
-    } else {
-
-        if (evadir(quantidadeSemestres)) {
-            evadidosGeral++;
-            emit(evadidosPorPeriodo[periodoAtual - 1], 1);
-            emit(evadidosPorSemestre[quantidadeSemestres - 1], 1);
-            emit(evadidosSemestrePeriodo[quantidadeSemestres - 1][periodoAtual - 1],
-                    1);
-            emit(totalEvadidos, 1);
-            cancelAndDelete(aluno);
-        } else {
-            aluno->setSaidaPeriodo(periodoAtual - 1, (int) tempo.dbl());
-            int duracao = (int) (aluno->getSaidaPeriodo(periodoAtual - 1) - aluno->getEntradaPeriodo(periodoAtual - 1)/6);
-            emit(totalSemestrePeriodo[quantidadeSemestres - 1][periodoAtual - 1], 1);
-            emit(duracaoTransicaoPeriodo[duracao][periodoAtual - 1], 1);
-            if(periodoAtual == numeroPeriodos) {
-                emit(graduadosPorSemestre[quantidadeSemestres - 1], 1);
-            }
-            send(aluno, "saida", portaSaida);
-        }
-
-    }
-}
 
 void Periodo::avaliarAlunoPorEvasaoEretencao(Aluno *aluno) {
     aluno->setNovato(false);
     int duracaoVinculo = (int) (tempo.dbl() - aluno->getEntrada()) / 6;
-    duracaoVinculo = duracaoVinculo > 21 ? 21 : duracaoVinculo;
+//    duracaoVinculo = duracaoVinculo > 21 ? 21 : duracaoVinculo;
 
     if (aluno->getEntradaPeriodo(periodoAtual - 1) == 0) {
         aluno->setEntradaPeriodo(periodoAtual - 1, (int) tempo.dbl());
     }
 
-    if (evadir(duracaoVinculo)) {
+    if (duracaoVinculo > 21 || evadir(duracaoVinculo)) {
         evadidosGeral++;
         emit(evadidosPorPeriodo[periodoAtual - 1], 1);
         emit(evadidosPorSemestre[duracaoVinculo - 1], 1);
@@ -164,7 +93,7 @@ void Periodo::avaliarAlunoPorEvasaoEretencao(Aluno *aluno) {
             aluno->setSaidaPeriodo(periodoAtual - 1, (int) tempo.dbl());
             emit(totalSemestrePeriodo[duracaoVinculo - 1][periodoAtual - 1], 1);
             int duracao = (int) ((aluno->getSaidaPeriodo(periodoAtual - 1) - aluno->getEntradaPeriodo(periodoAtual - 1))/6);
-            duracao = duracao > 20 ? 20 : duracao;
+//            duracao = duracao > 20 ? 20 : duracao;
 
             emit(duracaoTransicaoPeriodo[duracao][periodoAtual - 1], 1);
             if (periodoAtual == numeroPeriodos) {
@@ -180,21 +109,6 @@ void Periodo::avaliarAlunoPorEvasaoEretencao(Aluno *aluno) {
 void Periodo::adicionarNaTurma(Aluno *aluno) {
     turma.insert(aluno);
     emit(totalMatriculas, 1);
-//    if (contadorDeAlunosNaTurma == capacidadeTurma) {
-//        filaEspera.insert(aluno);
-//    } else if (filaEspera.getLength() > 0) {
-//
-//        if (compare(aluno, check_and_cast<Aluno*>(filaEspera.front()))) {
-//            turma.insert(aluno);
-//        } else {
-//            Aluno *alunoDaFila = check_and_cast<Aluno*>(filaEspera.pop());
-//            turma.insert(alunoDaFila);
-//            filaEspera.insert(aluno);
-//        }
-//
-//    } else {
-//        turma.insert(aluno);
-//    }
 }
 
 bool Periodo::compare(Aluno *aluno1, Aluno *aluno2) {
@@ -219,16 +133,16 @@ bool Periodo::evadir(int duracaoVinculo) {
 
     float rNumber = randomValue();
 
-    if (analiseTipo == 0) {
-        float probEvasao = (float) probDeEvasaoPeriodo[analiseCurso][periodoAtual - 1];
+    if (probsTipo == 0) {
+        float probEvasao = (float) probsEvasaoPeriodo[curso][periodoAtual - 1];
         return rNumber <= probEvasao;
 
-    } else if (analiseTipo == 1) {
-        float probEvasao = (float) probDeEvasaoSemestre[analiseCurso][duracaoVinculo - 1];
+    } else if (probsTipo == 1) {
+        float probEvasao = (float) probsEvasaoDuracaoVinculo[curso][duracaoVinculo - 1];
         return rNumber <= probEvasao;
 
     } else {
-        float probEvasao = (float) probDeEvasaoPeriodoSemestre[analiseCurso][periodoAtual - 1][duracaoVinculo - 1];
+        float probEvasao = (float) probsEvasaoPeriodoDuracaoVinculo[curso][periodoAtual - 1][duracaoVinculo - 1];
         return rNumber <= probEvasao;
     }
 
@@ -238,19 +152,19 @@ bool Periodo::reter(int duracaoVinculo) {
 
     float rNumber = randomValue();
 
-    if (analiseTipo == 0) {
+    if (probsTipo == 0) {
 
-        float probRetencao = (float) probDeRetencaoPeriodo[analiseCurso][periodoAtual - 1];
+        float probRetencao = (float) probsRetencaoPeriodo[curso][periodoAtual - 1];
         return rNumber <= probRetencao;
 
-    } else if (analiseTipo == 1) {
+    } else if (probsTipo == 1) {
 
-        float probRetencao = (float) probDeRetencaoSemestre[analiseCurso][duracaoVinculo - 1];
+        float probRetencao = (float) probsRetencaoDuracaoVinculo[curso][duracaoVinculo - 1];
         return rNumber <= probRetencao;
 
     } else {
 
-        float probRetencao = (float) probDeRetencaoPeriodoSemestre[analiseCurso][periodoAtual - 1][duracaoVinculo - 1];
+        float probRetencao = (float) probsRetencaoPeriodoDuracaoVinculo[curso][periodoAtual - 1][duracaoVinculo - 1];
         return rNumber <= probRetencao;
 
     }
