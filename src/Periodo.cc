@@ -73,64 +73,36 @@ void Periodo::avaliarAlunoPorEvasaoEreprovacao(Aluno *aluno) {
         aluno->setEntradaPeriodo(periodoAtual - 1, (int) tempo.dbl());
     }
 
-//    if(reprovar(duracaoVinculo)){
-//        reprovadosGeral++;
-//        emit(reprovadosPorPeriodo[periodoAtual - 1], 1);
-//        emit(reprovadosPorSemestre[duracaoVinculo - 1], 1);
-//        emit(reprovadosSemestrePeriodo[duracaoVinculo - 1][periodoAtual - 1], 1);
-//        aluno->setReprovacoes(periodoAtual - 1, aluno->getReprovacoes(periodoAtual - 1) + 1);
-//
-//        if(duracaoVinculo > 21 || evadir(duracaoVinculo)){
-//            evadidosGeral++;
-//            emit(evadidosPorPeriodo[periodoAtual - 1], 1);
-//            emit(evadidosPorSemestre[duracaoVinculo - 1], 1);
-//            emit(evadidosSemestrePeriodo[duracaoVinculo - 1][periodoAtual - 1], 1);
-//            emit(totalEvadidos, 1);
-//            cancelAndDelete(aluno);
-//        } else {
-//            send(aluno, "saida", portaSaidaInicialReprovacao + capacidadeTurma);
-//        }
-//
-//    } else {
-//        if (duracaoVinculo > 21 || evadir(duracaoVinculo)) {
-//            evadidosGeral++;
-//            emit(evadidosPorPeriodo[periodoAtual - 1], 1);
-//            emit(evadidosPorSemestre[duracaoVinculo - 1], 1);
-//            emit(evadidosSemestrePeriodo[duracaoVinculo - 1][periodoAtual - 1], 1);
-//            emit(totalEvadidos, 1);
-//            cancelAndDelete(aluno);
-//        } else {
-//            aluno->setSaidaPeriodo(periodoAtual - 1, (int) tempo.dbl());
-//            emit(totalSemestrePeriodo[duracaoVinculo - 1][periodoAtual - 1], 1);
-//            int duracao = (int) ((aluno->getSaidaPeriodo(periodoAtual - 1) - aluno->getEntradaPeriodo(periodoAtual - 1)) / 6);
-//            emit(duracaoTransicaoPeriodo[duracao][periodoAtual - 1], 1);
-//            if (periodoAtual == numeroPeriodos) {
-//                emit(graduadosPorSemestre[duracaoVinculo - 1], 1);
-//            }
-//            send(aluno, "saida", portaSaida);
-//        }
-//    }
+    if(reprovar(duracaoVinculo)){
+        reprovadosGeral++;
+        emit(reprovadosPorPeriodo[periodoAtual - 1], 1);
+        emit(reprovadosPorSemestre[duracaoVinculo - 1], 1);
+        emit(reprovadosSemestrePeriodo[duracaoVinculo - 1][periodoAtual - 1], 1);
+        aluno->setReprovacoes(periodoAtual - 1, aluno->getReprovacoes(periodoAtual - 1) + 1);
 
-    if (duracaoVinculo > 21 || evadir(duracaoVinculo)) {
-        evadidosGeral++;
-        emit(evadidosPorPeriodo[periodoAtual - 1], 1);
-        emit(evadidosPorSemestre[duracaoVinculo - 1], 1);
-        emit(evadidosSemestrePeriodo[duracaoVinculo - 1][periodoAtual - 1], 1);
-        emit(totalEvadidos, 1);
-        cancelAndDelete(aluno);
-    } else {
-
-        if (reprovar(duracaoVinculo)) {
-            reprovadosGeral++;
-            emit(reprovadosPorPeriodo[periodoAtual - 1], 1);
-            emit(reprovadosPorSemestre[duracaoVinculo - 1], 1);
-            emit(reprovadosSemestrePeriodo[duracaoVinculo - 1][periodoAtual - 1], 1);
-            aluno->setReprovacoes(periodoAtual - 1, aluno->getReprovacoes(periodoAtual - 1) + 1);
+        if(duracaoVinculo > 21 || evadir(duracaoVinculo)){
+            evadidosGeral++;
+            emit(evadidosPorPeriodo[periodoAtual - 1], 1);
+            emit(evadidosPorSemestre[duracaoVinculo - 1], 1);
+            emit(evadidosSemestrePeriodo[duracaoVinculo - 1][periodoAtual - 1], 1);
+            emit(totalEvadidos, 1);
+            cancelAndDelete(aluno);
+        } else {
             send(aluno, "saida", portaSaidaInicialReprovacao + capacidadeTurma);
+        }
+
+    } else {
+        if (duracaoVinculo > 21 || evadir(duracaoVinculo)) {
+            evadidosGeral++;
+            emit(evadidosPorPeriodo[periodoAtual - 1], 1);
+            emit(evadidosPorSemestre[duracaoVinculo - 1], 1);
+            emit(evadidosSemestrePeriodo[duracaoVinculo - 1][periodoAtual - 1], 1);
+            emit(totalEvadidos, 1);
+            cancelAndDelete(aluno);
         } else {
             aluno->setSaidaPeriodo(periodoAtual - 1, (int) tempo.dbl());
             emit(totalSemestrePeriodo[duracaoVinculo - 1][periodoAtual - 1], 1);
-            int duracao = (int) ((aluno->getSaidaPeriodo(periodoAtual - 1) - aluno->getEntradaPeriodo(periodoAtual - 1))/6);
+            int duracao = (int) ((aluno->getSaidaPeriodo(periodoAtual - 1) - aluno->getEntradaPeriodo(periodoAtual - 1)) / 6);
             emit(duracaoTransicaoPeriodo[duracao][periodoAtual - 1], 1);
             if (periodoAtual == numeroPeriodos) {
                 emit(graduadosPorSemestre[duracaoVinculo - 1], 1);
@@ -138,6 +110,34 @@ void Periodo::avaliarAlunoPorEvasaoEreprovacao(Aluno *aluno) {
             send(aluno, "saida", portaSaida);
         }
     }
+
+//    if (duracaoVinculo > 21 || evadir(duracaoVinculo)) {
+//        evadidosGeral++;
+//        emit(evadidosPorPeriodo[periodoAtual - 1], 1);
+//        emit(evadidosPorSemestre[duracaoVinculo - 1], 1);
+//        emit(evadidosSemestrePeriodo[duracaoVinculo - 1][periodoAtual - 1], 1);
+//        emit(totalEvadidos, 1);
+//        cancelAndDelete(aluno);
+//    } else {
+//
+//        if (reprovar(duracaoVinculo)) {
+//            reprovadosGeral++;
+//            emit(reprovadosPorPeriodo[periodoAtual - 1], 1);
+//            emit(reprovadosPorSemestre[duracaoVinculo - 1], 1);
+//            emit(reprovadosSemestrePeriodo[duracaoVinculo - 1][periodoAtual - 1], 1);
+//            aluno->setReprovacoes(periodoAtual - 1, aluno->getReprovacoes(periodoAtual - 1) + 1);
+//            send(aluno, "saida", portaSaidaInicialReprovacao + capacidadeTurma);
+//        } else {
+//            aluno->setSaidaPeriodo(periodoAtual - 1, (int) tempo.dbl());
+//            emit(totalSemestrePeriodo[duracaoVinculo - 1][periodoAtual - 1], 1);
+//            int duracao = (int) ((aluno->getSaidaPeriodo(periodoAtual - 1) - aluno->getEntradaPeriodo(periodoAtual - 1))/6);
+//            emit(duracaoTransicaoPeriodo[duracao][periodoAtual - 1], 1);
+//            if (periodoAtual == numeroPeriodos) {
+//                emit(graduadosPorSemestre[duracaoVinculo - 1], 1);
+//            }
+//            send(aluno, "saida", portaSaida);
+//        }
+//    }
 
 }
 
