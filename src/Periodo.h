@@ -54,7 +54,7 @@ class Periodo : public cSimpleModule {
         int portaSaida;
         int portaSaidaInicialReprovacao;
         int curso = 0; // 0 - BSI, 1 - BCC
-        int probsTipo = 2; // 0 - POR PERIODO, 1 - POR SEMESTRE, 2 - SEMESTRE E PERIODO
+        int probsTipo = 1; // 0 - POR PERIODO, 1 - POR SEMESTRE, 2 - SEMESTRE E PERIODO
 
 //      ESPECIFICOS
         int contadorDeAlunosNaTurma;
@@ -97,8 +97,8 @@ class Periodo : public cSimpleModule {
         };
 
         double probsReprovacaoDuracaoVinculo [2][23] = {
-                {0.5446, 0.5693, 0.4731, 0.453, 0.4341, 0.4773, 0.4634, 0.478, 0.497, 0.5287, 0.5984, 0.5962, 0.6386, 0.5333, 0.7037, 0.7674, 0.7368, 0.6897, 0.4286, 0.3846, 0.25, 0.0},
-                {0.5531, 0.5156, 0.5018, 0.5328, 0.4829, 0.4798, 0.3766, 0.365, 0.3413, 0.3333, 0.3776, 0.5, 0.5139, 0.375, 0.3095, 0.3478, 0.5, 0.5, 0.75, 0.0, 0.0, 0.0},
+                {0.6163, 0.5718, 0.5156, 0.5101, 0.4767, 0.5273, 0.4927, 0.5, 0.5689, 0.535, 0.5656, 0.6058, 0.6386, 0.5467, 0.7222, 0.7674, 0.7368, 0.6897, 0.4286, 0.3846, 0.25, 0.0},
+                {0.6, 0.5219, 0.5424, 0.5371, 0.5561, 0.5087, 0.4286, 0.4161, 0.4127, 0.3158, 0.3878, 0.4875, 0.4444, 0.3929, 0.3571, 0.3043, 0.5, 0.5, 0.75, 0.0, 0.0, 0.0},
         };
 
 
