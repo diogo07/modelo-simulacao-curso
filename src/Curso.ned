@@ -10,29 +10,19 @@ simple Periodo
         @signal[quantidadeEvadidosGeral](type="long");
         @signal[quantidadeReprovadosGeral](type="long");
         @signal[quantidadeGeral](type="long");
-        @signal[evadidosPorPeriodo*](type=simtime_t);
-        @signal[reprovadosPorPeriodo*](type=simtime_t);
+        @signal[totalPorSemestre*](type=simtime_t);
         @signal[evadidosPorSemestre*](type=simtime_t);
         @signal[reprovadosPorSemestre*](type=simtime_t);
         @signal[graduadosPorSemestre*](type=simtime_t);
-        @signal[evadidosSemestrePeriodo*](type=simtime_t);
-        @signal[reprovadosSemestrePeriodo*](type=simtime_t);
-        @signal[totalSemestrePeriodo*](type=simtime_t);
         @signal[duracaoTransicaoPeriodo*](type=simtime_t);
-        @statistic[evadidosPorPeriodoTemplate](title="Evadidos por Periodo"; record=stats; unit=ms);
-        @statistic[reprovadosPorPeriodoTemplate](title="Reprovados por Periodo"; record=stats; unit=ms);
         @statistic[tamanhoTurma](title="Turma"; record=stats; unit=ms);
         @statistic[tamanhoFilaEspera](title="Fila de Espera"; record=stats; unit=ms);
         @statistic[quantidadeEvadidosGeral](title="Evadidos Geral"; record=stats; unit=ms);
         @statistic[quantidadeReprovadosGeral](title="Reprovados Geral"; record=stats; unit=ms);
-        @statisticTemplate[evadidosPorPeriodoTemplate](title="Evadidos por Periodo"; record=stats; unit=ms);
-        @statisticTemplate[reprovadosPorPeriodoTemplate](title="Reprovados por Periodo"; record=stats; unit=ms);
+        @statisticTemplate[totalPorSemestreTemplate](title="Total por Semestre"; record=stats; unit=ms);
         @statisticTemplate[evadidosPorSemestreTemplate](title="Evadidos por Semestre"; record=stats; unit=ms);
         @statisticTemplate[reprovadosPorSemestreTemplate](title="Reprovados por Semestre"; record=stats; unit=ms);
         @statisticTemplate[graduadosPorSemestreTemplate](title="Graduados por Semestre"; record=stats; unit=ms);
-        @statisticTemplate[evadidosSemestrePeriodoTemplate](title="Evadidos Semestre Periodo"; record=stats; unit=ms);
-        @statisticTemplate[reprovadosSemestrePeriodoTemplate](title="Reprovados Semestre Periodo"; record=stats; unit=ms);
-        @statisticTemplate[totalSemestrePeriodoTemplate](title="Total Semestre Periodo"; record=stats; unit=ms);
         @statisticTemplate[duracaoTransicaoPeriodoTemplate](title="Duração Transição Periodo"; record=stats; unit=ms);
 
         int capacidadeTurma;
@@ -74,7 +64,7 @@ network Curso
     @statistic[totalAlunos](title="Total Alunos"; record=stats; unit=ms);
     @statistic[totalMatriculas](title="Total Matriculas"; record=stats; unit=ms);
     int capacidadeTurma = 200;
-    int numeroPeriodos = 9;
+    int numeroPeriodos = 10;
     types:
         channel D extends ned.DatarateChannel
         {

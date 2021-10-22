@@ -16,17 +16,13 @@ class Periodo : public cSimpleModule {
 
 //      INFO DO PERIODO
         simsignal_t totalMatriculas;
-        simsignal_t evadidosPorPeriodo[10];
-        simsignal_t reprovadosPorPeriodo[10];
 
         simsignal_t evadidosPorSemestre[21];
         simsignal_t reprovadosPorSemestre[21];
         simsignal_t graduadosPorSemestre[21];
+        simsignal_t totalPorSemestre[21];
+        simsignal_t duracaoTransicaoPeriodo[21];
 
-        simsignal_t evadidosSemestrePeriodo[21][10];
-        simsignal_t reprovadosSemestrePeriodo[21][10];
-        simsignal_t totalSemestrePeriodo[21][10];
-        simsignal_t duracaoTransicaoPeriodo[21][10];
 
 
         simsignal_t totalEvadidos;
@@ -57,7 +53,7 @@ class Periodo : public cSimpleModule {
         int numeroPeriodos; // INDICA A QUANTIDADE DE PERIODOS QUE O FORMATO DE CURSO POSSUI
         int portaSaida;
         int portaSaidaInicialReprovacao;
-        int curso = 1; // 0 - BSI, 1 - BCC
+        int curso = 0; // 0 - BSI, 1 - BCC
         int probsTipo = 2; // 0 - POR PERIODO, 1 - POR SEMESTRE, 2 - SEMESTRE E PERIODO
 
 //      ESPECIFICOS
