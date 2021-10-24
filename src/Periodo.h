@@ -54,7 +54,7 @@ class Periodo : public cSimpleModule {
         int portaSaida;
         int portaSaidaInicialReprovacao;
         int curso = 0; // 0 - BSI, 1 - BCC
-        int probsTipo = 1; // 0 - POR PERIODO, 1 - POR SEMESTRE, 2 - SEMESTRE E PERIODO
+        int probsTipo = 0; // 0 - POR PERIODO, 1 - POR SEMESTRE, 2 - SEMESTRE E PERIODO
 
 //      ESPECIFICOS
         int contadorDeAlunosNaTurma;

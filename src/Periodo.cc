@@ -63,10 +63,15 @@ void Periodo::processarAluno(Aluno *aluno) {
     }
 }
 
+void Periodo::adicionarNaTurma(Aluno *aluno) {
+    turma.insert(aluno);
+    emit(totalMatriculas, 1);
+}
 
 void Periodo::avaliarAlunoPorEvasaoEreprovacao(Aluno *aluno) {
     aluno->setNovato(false);
     int duracaoVinculo = (int) (tempo.dbl() - aluno->getEntrada()) / 6;
+    emit(totalPorSemestre[duracaoVinculo - 1], 1);
 
     if (aluno->getEntradaPeriodo(periodoAtual - 1) == 0) {
         aluno->setEntradaPeriodo(periodoAtual - 1, (int) tempo.dbl());
@@ -118,7 +123,6 @@ void Periodo::avaliarAlunoPorEvasaoEreprovacao(Aluno *aluno) {
             send(aluno, "saida", portaSaidaInicialReprovacao + capacidadeTurma);
         } else {
             aluno->setSaidaPeriodo(periodoAtual - 1, (int) tempo.dbl());
-            emit(totalPorSemestre[duracaoVinculo - 1], 1);
             int duracao = (int) ((aluno->getSaidaPeriodo(periodoAtual - 1) - aluno->getEntradaPeriodo(periodoAtual - 1))/6);
             emit(duracaoTransicaoPeriodo[duracao], 1);
             if (periodoAtual == numeroPeriodos) {
@@ -130,10 +134,6 @@ void Periodo::avaliarAlunoPorEvasaoEreprovacao(Aluno *aluno) {
 
 }
 
-void Periodo::adicionarNaTurma(Aluno *aluno) {
-    turma.insert(aluno);
-    emit(totalMatriculas, 1);
-}
 
 bool Periodo::compare(Aluno *aluno1, Aluno *aluno2) {
     if (aluno1->getNovato() && aluno2->getNovato()) {
@@ -197,44 +197,8 @@ bool Periodo::reprovar(int duracaoVinculo) {
 void Periodo::registerSignalArray() {
 
     int semestres = 21;
-    int periodos = 10;
 
-    //    INICIA VARIÁVEIS DE STATISTICS DE EVASÃO E REPROVAÇÃO POR PERÍODO
-//    for (int pr = 0; pr < semestres; ++pr) {
-//        for (int prd = 0; prd < periodos; ++prd) {
-//            char signalNameDuracaoTransicaoPeriodo[32];
-//            sprintf(signalNameDuracaoTransicaoPeriodo, "duracaoTransicaoPeriodo%d_%d", pr, prd);
-//            simsignal_t signalDuracaoTransicaoPeriodo = registerSignal(signalNameDuracaoTransicaoPeriodo);
-//            cProperty *statisticTemplateDuracaoTransicaoPeriodo = getProperties()->get("statisticTemplate", "duracaoTransicaoPeriodoTemplate");
-//            getEnvir()->addResultRecorders(this, signalDuracaoTransicaoPeriodo, signalNameDuracaoTransicaoPeriodo, statisticTemplateDuracaoTransicaoPeriodo);
-//            duracaoTransicaoPeriodo[pr][prd] = signalDuracaoTransicaoPeriodo;
-//        }
-//    }
-
-//    INICIA VARIÁVEIS DE STATISTICS DE EVASÃO E RETENÇÃO POR PERÍODO
-//    for (int p = 0; p < periodos; ++p) {
-//
-//        char signalNameEvadidosPeriodo[32];
-//        char signalNameReprovadosPeriodo[32];
-//
-//        sprintf(signalNameEvadidosPeriodo, "evadidosPorPeriodo%d", p);
-//        sprintf(signalNameReprovadosPeriodo, "reprovadosPorPeriodo%d", p);
-//
-//        simsignal_t signalEvadidosPeriodo = registerSignal(signalNameEvadidosPeriodo);
-//        simsignal_t signalReprovadosPeriodo = registerSignal(signalNameReprovadosPeriodo);
-//
-//        cProperty *statisticTemplateEvadidosPeriodo = getProperties()->get("statisticTemplate", "reprovadosPorPeriodoTemplate");
-//        cProperty *statisticTemplateReprovadosPeriodo = getProperties()->get("statisticTemplate", "reprovadosPorPeriodoTemplate");
-//
-//        getEnvir()->addResultRecorders(this, signalEvadidosPeriodo, signalNameEvadidosPeriodo, statisticTemplateEvadidosPeriodo);
-//        getEnvir()->addResultRecorders(this, signalReprovadosPeriodo, signalNameReprovadosPeriodo, statisticTemplateReprovadosPeriodo);
-//
-//        evadidosPorPeriodo[p] = signalEvadidosPeriodo;
-//        reprovadosPorPeriodo[p] = signalReprovadosPeriodo;
-//    }
-
-
-    //    INICIA VARIÁVEIS DE STATISTICS DE EVASÃO, GRADUAÇÃO E RETENÇÃO POR SEMESTRE
+    //    INICIA VARIÁVEIS DE STATISTICS DE EVASÃO, GRADUAÇÃO E REPROVAÇÃO POR SEMESTRE
     for (int s = 0; s < semestres; ++s) {
 
         char signalNameTotalSemestre[32];
@@ -274,39 +238,6 @@ void Periodo::registerSignalArray() {
         duracaoTransicaoPeriodo[s] = signalDuracaoTransicaoPeriodo;
    }
 
-//
-//
-//    //    INICIA VARIÁVEIS DE STATISTICS DE EVASÃO E RETENÇÃO POR PERÍODO E SEMESTRE, E TOTAL DE ALUNOS POR SEMESTRE E PERIODO
-//   for (int sem = 0; sem < semestres; ++sem) {
-//
-//        for (int pe = 0; pe < periodos; ++pe) {
-//
-//            char signalNameEvadidosSemestrePeriodo[32];
-//            char signalNameReprovadosSemestrePeriodo[32];
-//            char signalNameTotalSemestrePeriodo[32];
-//
-//            sprintf(signalNameEvadidosSemestrePeriodo, "evadidosSemestrePeriodo%d_%d", sem, pe);
-//            sprintf(signalNameReprovadosSemestrePeriodo, "reprovadosSemestrePeriodo%d_%d", sem, pe);
-//            sprintf(signalNameTotalSemestrePeriodo, "totalSemestrePeriodo%d_%d", sem, pe);
-//
-//            simsignal_t signalEvadidosSemestrePeriodo = registerSignal(signalNameEvadidosSemestrePeriodo);
-//            simsignal_t signalReprovadosSemestrePeriodo = registerSignal(signalNameReprovadosSemestrePeriodo);
-//            simsignal_t signalTotalSemestrePeriodo = registerSignal(signalNameTotalSemestrePeriodo);
-//
-//            cProperty *statisticTemplateEvadidosSemestrePeriodo = getProperties()->get("statisticTemplate", "evadidosSemestrePeriodoTemplate");
-//            cProperty *statisticTemplateReprovadosSemestrePeriodo = getProperties()->get("statisticTemplate", "reprovadosSemestrePeriodoTemplate");
-//            cProperty *statisticTemplateTotalSemestrePeriodo = getProperties()->get("statisticTemplate", "totalSemestrePeriodoTemplate");
-//
-//            getEnvir()->addResultRecorders(this, signalEvadidosSemestrePeriodo, signalNameEvadidosSemestrePeriodo, statisticTemplateEvadidosSemestrePeriodo);
-//            getEnvir()->addResultRecorders(this, signalReprovadosSemestrePeriodo, signalNameReprovadosSemestrePeriodo, statisticTemplateReprovadosSemestrePeriodo);
-//            getEnvir()->addResultRecorders(this, signalTotalSemestrePeriodo, signalNameTotalSemestrePeriodo, statisticTemplateTotalSemestrePeriodo);
-//
-//            evadidosSemestrePeriodo[sem][pe] = signalEvadidosSemestrePeriodo;
-//            reprovadosSemestrePeriodo[sem][pe] = signalReprovadosSemestrePeriodo;
-//            totalSemestrePeriodo[sem][pe] = signalTotalSemestrePeriodo;
-//
-//        }
-//    }
 
 }
 
