@@ -99,7 +99,6 @@ void Periodo::avaliarAlunoPorEvasaoEreprovacao(Aluno *aluno) {
 //            cancelAndDelete(aluno);
 //        } else {
 //            aluno->setSaidaPeriodo(periodoAtual - 1, (int) tempo.dbl());
-//            emit(totalSemestre[duracaoVinculo - 1], 1);
 //            int duracao = (int) ((aluno->getSaidaPeriodo(periodoAtual - 1) - aluno->getEntradaPeriodo(periodoAtual - 1)) / 6);
 //            emit(duracaoTransicaoPeriodo[duracao], 1);
 //            if (periodoAtual == numeroPeriodos) {
@@ -120,7 +119,16 @@ void Periodo::avaliarAlunoPorEvasaoEreprovacao(Aluno *aluno) {
             reprovadosGeral++;
             emit(reprovadosPorSemestre[duracaoVinculo - 1], 1);
             aluno->setReprovacoes(periodoAtual - 1, aluno->getReprovacoes(periodoAtual - 1) + 1);
-            send(aluno, "saida", portaSaidaInicialReprovacao + capacidadeTurma);
+
+//            if(aluno->getReprovacoes(periodoAtual - 1) >= 4){
+//                evadidosGeral++;
+//                emit(evadidosPorSemestre[duracaoVinculo - 1], 1);
+//                emit(totalEvadidos, 1);
+//                cancelAndDelete(aluno);
+//            } else {
+                send(aluno, "saida", portaSaidaInicialReprovacao + capacidadeTurma);
+//            }
+
         } else {
             aluno->setSaidaPeriodo(periodoAtual - 1, (int) tempo.dbl());
             int duracao = (int) ((aluno->getSaidaPeriodo(periodoAtual - 1) - aluno->getEntradaPeriodo(periodoAtual - 1))/6);
