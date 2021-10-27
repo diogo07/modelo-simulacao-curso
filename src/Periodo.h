@@ -23,8 +23,6 @@ class Periodo : public cSimpleModule {
         simsignal_t totalPorSemestre[21];
         simsignal_t duracaoTransicaoPeriodo[21];
 
-
-
         simsignal_t totalEvadidos;
         simsignal_t quantidadeEvadidosGeral;
         simsignal_t quantidadeReprovadosGeral;
@@ -53,8 +51,8 @@ class Periodo : public cSimpleModule {
         int numeroPeriodos; // INDICA A QUANTIDADE DE PERIODOS QUE O FORMATO DE CURSO POSSUI
         int portaSaida;
         int portaSaidaInicialReprovacao;
-        int curso = 0; // 0 - BSI, 1 - BCC
-        int probsTipo = 0; // 0 - POR PERIODO, 1 - POR SEMESTRE, 2 - SEMESTRE E PERIODO
+        int curso = 1; // 0 - BSI, 1 - BCC
+        int probsTipo = 2; // 0 - POR PERIODO, 1 - POR SEMESTRE, 2 - SEMESTRE E PERIODO
 
 //      ESPECIFICOS
         int contadorDeAlunosNaTurma;
