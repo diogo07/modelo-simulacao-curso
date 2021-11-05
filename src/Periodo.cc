@@ -133,7 +133,7 @@ void Periodo::avaliarAlunoPorEvasaoEreprovacao(Aluno *aluno) {
             aluno->setSaidaPeriodo(periodoAtual - 1, (int) tempo.dbl());
             int duracao = (int) ((aluno->getSaidaPeriodo(periodoAtual - 1) - aluno->getEntradaPeriodo(periodoAtual - 1))/6);
             emit(duracaoTransicaoPeriodo[duracao], 1);
-            if (periodoAtual == numeroPeriodos) {
+            if (periodoAtual == numeroPeriodos || graduar(duracaoVinculo)) {
                 emit(graduadosPorSemestre[duracaoVinculo - 1], 1);
             }
             send(aluno, "saida", portaSaida);
@@ -200,6 +200,14 @@ bool Periodo::reprovar(int duracaoVinculo) {
         return rNumber <= probReprovacao;
 
     }
+}
+
+bool Periodo::graduar(int duracaoVinculo) {
+
+    float rNumber = randomValue();
+    float probGraduacao = (float) probsGraduacaoPeriodoDuracaoVinculo[curso][periodoAtual - 1][duracaoVinculo - 1];
+    return rNumber <= probGraduacao;
+
 }
 
 void Periodo::registerSignalArray() {
