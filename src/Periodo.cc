@@ -65,78 +65,54 @@ void Periodo::processarAluno(Aluno *aluno) {
 
 void Periodo::adicionarNaTurma(Aluno *aluno) {
     turma.insert(aluno);
-    emit(totalMatriculas, 1);
 }
 
 void Periodo::avaliarAlunoPorEvasaoEreprovacao(Aluno *aluno) {
     aluno->setNovato(false);
-    int duracaoVinculo = (int) (tempo.dbl() - aluno->getEntrada()) / 6;
-    emit(totalPorSemestre[duracaoVinculo - 1], 1);
+    int duracaoVinculo = (tempo.dbl() - aluno->getEntrada()) / 6;
 
     if (aluno->getEntradaPeriodo(periodoAtual - 1) == 0) {
         aluno->setEntradaPeriodo(periodoAtual - 1, (int) tempo.dbl());
     }
 
-//    if(reprovar(duracaoVinculo)){
-//        reprovadosGeral++;
-//        emit(reprovadosPorSemestre[duracaoVinculo - 1], 1);
-//        aluno->setReprovacoes(periodoAtual - 1, aluno->getReprovacoes(periodoAtual - 1) + 1);
-//
-//        if(duracaoVinculo > 21 || evadir(duracaoVinculo)){
-//            evadidosGeral++;
-//            emit(evadidosPorSemestre[duracaoVinculo - 1], 1);
-//            emit(totalEvadidos, 1);
-//            cancelAndDelete(aluno);
-//        } else {
-//            send(aluno, "saida", portaSaidaInicialReprovacao + capacidadeTurma);
-//        }
-//
-//    } else {
-//        if (duracaoVinculo > 21 || evadir(duracaoVinculo)) {
-//            evadidosGeral++;
-//            emit(evadidosPorSemestre[duracaoVinculo - 1], 1);
-//            emit(totalEvadidos, 1);
-//            cancelAndDelete(aluno);
-//        } else {
-//            aluno->setSaidaPeriodo(periodoAtual - 1, (int) tempo.dbl());
-//            int duracao = (int) ((aluno->getSaidaPeriodo(periodoAtual - 1) - aluno->getEntradaPeriodo(periodoAtual - 1)) / 6);
-//            emit(duracaoTransicaoPeriodo[duracao], 1);
-//            if (periodoAtual == numeroPeriodos) {
-//                emit(graduadosPorSemestre[duracaoVinculo - 1], 1);
-//            }
-//            send(aluno, "saida", portaSaida);
-//        }
-//    }
 
-    if (duracaoVinculo > 21 || evadir(duracaoVinculo)) {
+    if (evadir(duracaoVinculo) || (duracaoVinculo > 21)) {
         evadidosGeral++;
         emit(evadidosPorSemestre[duracaoVinculo - 1], 1);
         emit(totalEvadidos, 1);
         cancelAndDelete(aluno);
     } else {
-
+        emit(totalPorSemestre[duracaoVinculo - 1], 1);
+        emit(totalMatriculas, 1);
         if (reprovar(duracaoVinculo)) {
             reprovadosGeral++;
             emit(reprovadosPorSemestre[duracaoVinculo - 1], 1);
             aluno->setReprovacoes(periodoAtual - 1, aluno->getReprovacoes(periodoAtual - 1) + 1);
-
-//            if(aluno->getReprovacoes(periodoAtual - 1) >= 4){
-//                evadidosGeral++;
-//                emit(evadidosPorSemestre[duracaoVinculo - 1], 1);
-//                emit(totalEvadidos, 1);
-//                cancelAndDelete(aluno);
-//            } else {
-                send(aluno, "saida", portaSaidaInicialReprovacao + capacidadeTurma);
-//            }
+            send(aluno, "saida", portaSaidaInicialReprovacao + capacidadeTurma);
 
         } else {
-            aluno->setSaidaPeriodo(periodoAtual - 1, (int) tempo.dbl());
-            int duracao = (int) ((aluno->getSaidaPeriodo(periodoAtual - 1) - aluno->getEntradaPeriodo(periodoAtual - 1))/6);
-            emit(duracaoTransicaoPeriodo[duracao], 1);
-            if (periodoAtual == numeroPeriodos || graduar(duracaoVinculo)) {
+
+            if (graduar(duracaoVinculo)) {
                 emit(graduadosPorSemestre[duracaoVinculo - 1], 1);
+                aluno->setSaidaPeriodo(periodoAtual - 1, (int) tempo.dbl());
+//                    emit(aprovadosPorSemestre[duracaoVinculo - 1], 1);
+                int duracao = (int) ((aluno->getSaidaPeriodo(periodoAtual - 1) - aluno->getEntradaPeriodo(periodoAtual - 1))/6);
+                emit(duracaoTransicaoPeriodo[duracao], 1);
+                send(aluno, "saida", portaSaida);
+            } else {
+                if(numeroPeriodos == periodoAtual){
+                    reprovadosGeral++;
+                    emit(reprovadosPorSemestre[duracaoVinculo - 1], 1);
+                    aluno->setReprovacoes(periodoAtual - 1, aluno->getReprovacoes(periodoAtual - 1) + 1);
+                    send(aluno, "saida", portaSaidaInicialReprovacao + capacidadeTurma);
+                } else {
+                    aluno->setSaidaPeriodo(periodoAtual - 1, (int) tempo.dbl());
+//                    emit(aprovadosPorSemestre[duracaoVinculo - 1], 1);
+                    int duracao = (int) ((aluno->getSaidaPeriodo(periodoAtual - 1) - aluno->getEntradaPeriodo(periodoAtual - 1))/6);
+                    emit(duracaoTransicaoPeriodo[duracao], 1);
+                    send(aluno, "saida", portaSaida);
+                }
             }
-            send(aluno, "saida", portaSaida);
         }
     }
 
@@ -167,15 +143,15 @@ bool Periodo::evadir(int duracaoVinculo) {
 
     if (probsTipo == 0) {
         float probEvasao = (float) probsEvasaoPeriodo[curso][periodoAtual - 1];
-        return rNumber <= probEvasao;
+        return rNumber < probEvasao;
 
     } else if (probsTipo == 1) {
         float probEvasao = (float) probsEvasaoDuracaoVinculo[curso][duracaoVinculo - 1];
-        return rNumber <= probEvasao;
+        return rNumber < probEvasao;
 
     } else {
         float probEvasao = (float) probsEvasaoPeriodoDuracaoVinculo[curso][periodoAtual - 1][duracaoVinculo - 1];
-        return rNumber <= probEvasao;
+        return rNumber < probEvasao;
     }
 
 }
@@ -187,26 +163,31 @@ bool Periodo::reprovar(int duracaoVinculo) {
     if (probsTipo == 0) {
 
         float probReprovacao = (float) probsReprovacaoPeriodo[curso][periodoAtual - 1];
-        return rNumber <= probReprovacao;
+        return rNumber < probReprovacao;
 
     } else if (probsTipo == 1) {
 
         float probReprovacao = (float) probsReprovacaoDuracaoVinculo[curso][duracaoVinculo - 1];
-        return rNumber <= probReprovacao;
+        return rNumber < probReprovacao;
 
     } else {
 
         float probReprovacao = (float) probsReprovacaoPeriodoDuracaoVinculo[curso][periodoAtual - 1][duracaoVinculo - 1];
-        return rNumber <= probReprovacao;
+        return rNumber < probReprovacao;
 
     }
 }
 
 bool Periodo::graduar(int duracaoVinculo) {
-
     float rNumber = randomValue();
-    float probGraduacao = (float) probsGraduacaoPeriodoDuracaoVinculo[curso][periodoAtual - 1][duracaoVinculo - 1];
-    return rNumber <= probGraduacao;
+    if (probsTipo == 1) {
+        float probGraduacao = (float) probsGraduacaoDuracaoVinculo[curso][duracaoVinculo - 1];
+        return rNumber < probGraduacao;
+
+    } else {
+        float probGraduacao = (float) probsGraduacaoPeriodoDuracaoVinculo[curso][periodoAtual - 1][duracaoVinculo - 1];
+        return rNumber < probGraduacao;
+    }
 
 }
 
@@ -219,37 +200,43 @@ void Periodo::registerSignalArray() {
 
         char signalNameTotalSemestre[32];
         char signalNameEvadidosSemestre[32];
-        char signalNameReprovadosSemestre[32];
         char signalNameGraduadosSemestre[32];
+        char signalNameReprovadosSemestre[32];
+        char signalNameAprovadosSemestre[32];
         char signalNameDuracaoTransicaoPeriodo[32];
 
         sprintf(signalNameTotalSemestre, "totalPorSemestre%d", s);
         sprintf(signalNameEvadidosSemestre, "evadidosPorSemestre%d", s);
-        sprintf(signalNameReprovadosSemestre, "reprovadosPorSemestre%d", s);
         sprintf(signalNameGraduadosSemestre, "graduadosPorSemestre%d", s);
+        sprintf(signalNameReprovadosSemestre, "reprovadosPorSemestre%d", s);
+        sprintf(signalNameAprovadosSemestre, "aprovadosPorSemestre%d", s);
         sprintf(signalNameDuracaoTransicaoPeriodo, "duracaoTransicaoPeriodo%d", s);
 
         simsignal_t signalTotalSemestre = registerSignal(signalNameTotalSemestre);
         simsignal_t signalEvadidosSemestre = registerSignal(signalNameEvadidosSemestre);
-        simsignal_t signalReprovadosSemestre = registerSignal(signalNameReprovadosSemestre);
         simsignal_t signalGraduadosSemestre = registerSignal(signalNameGraduadosSemestre);
+        simsignal_t signalReprovadosSemestre = registerSignal(signalNameReprovadosSemestre);
+        simsignal_t signalAprovadosSemestre = registerSignal(signalNameAprovadosSemestre);
         simsignal_t signalDuracaoTransicaoPeriodo = registerSignal(signalNameDuracaoTransicaoPeriodo);
 
         cProperty *statisticTemplateTotalSemestre = getProperties()->get("statisticTemplate", "totalPorSemestreTemplate");
         cProperty *statisticTemplateEvadidosSemestre = getProperties()->get("statisticTemplate", "evadidosPorSemestreTemplate");
-        cProperty *statisticTemplateReprovadosSemestre = getProperties()->get("statisticTemplate", "reprovadosPorSemestreTemplate");
         cProperty *statisticTemplateGraduadosSemestre = getProperties()->get("statisticTemplate", "graduadosPorSemestreTemplate");
+        cProperty *statisticTemplateReprovadosSemestre = getProperties()->get("statisticTemplate", "reprovadosPorSemestreTemplate");
+        cProperty *statisticTemplateAprovadosSemestre = getProperties()->get("statisticTemplate", "aprovadosPorSemestreTemplate");
         cProperty *statisticTemplateDuracaoTransicaoPeriodo = getProperties()->get("statisticTemplate", "duracaoTransicaoPeriodoTemplate");
 
         getEnvir()->addResultRecorders(this, signalTotalSemestre, signalNameTotalSemestre, statisticTemplateTotalSemestre);
         getEnvir()->addResultRecorders(this, signalEvadidosSemestre, signalNameEvadidosSemestre, statisticTemplateEvadidosSemestre);
-        getEnvir()->addResultRecorders(this, signalReprovadosSemestre, signalNameReprovadosSemestre, statisticTemplateReprovadosSemestre);
         getEnvir()->addResultRecorders(this, signalGraduadosSemestre, signalNameGraduadosSemestre, statisticTemplateGraduadosSemestre);
+        getEnvir()->addResultRecorders(this, signalReprovadosSemestre, signalNameReprovadosSemestre, statisticTemplateReprovadosSemestre);
+        getEnvir()->addResultRecorders(this, signalAprovadosSemestre, signalNameAprovadosSemestre, statisticTemplateAprovadosSemestre);
         getEnvir()->addResultRecorders(this, signalDuracaoTransicaoPeriodo, signalNameDuracaoTransicaoPeriodo, statisticTemplateDuracaoTransicaoPeriodo);
 
         totalPorSemestre[s] = signalTotalSemestre;
         evadidosPorSemestre[s] = signalEvadidosSemestre;
         reprovadosPorSemestre[s] = signalReprovadosSemestre;
+        aprovadosPorSemestre[s] = signalAprovadosSemestre;
         graduadosPorSemestre[s] = signalGraduadosSemestre;
         duracaoTransicaoPeriodo[s] = signalDuracaoTransicaoPeriodo;
    }

@@ -13,6 +13,7 @@ simple Periodo
         @signal[totalPorSemestre*](type=simtime_t);
         @signal[evadidosPorSemestre*](type=simtime_t);
         @signal[reprovadosPorSemestre*](type=simtime_t);
+        @signal[aprovadosPorSemestre*](type=simtime_t);
         @signal[graduadosPorSemestre*](type=simtime_t);
         @signal[duracaoTransicaoPeriodo*](type=simtime_t);
         @statistic[tamanhoTurma](title="Turma"; record=stats; unit=ms);
@@ -22,6 +23,7 @@ simple Periodo
         @statisticTemplate[totalPorSemestreTemplate](title="Total por Semestre"; record=stats; unit=ms);
         @statisticTemplate[evadidosPorSemestreTemplate](title="Evadidos por Semestre"; record=stats; unit=ms);
         @statisticTemplate[reprovadosPorSemestreTemplate](title="Reprovados por Semestre"; record=stats; unit=ms);
+        @statisticTemplate[aprovadosPorSemestreTemplate](title="Aprovados por Semestre"; record=stats; unit=ms);
         @statisticTemplate[graduadosPorSemestreTemplate](title="Graduados por Semestre"; record=stats; unit=ms);
         @statisticTemplate[duracaoTransicaoPeriodoTemplate](title="Duração Transição Periodo"; record=stats; unit=ms);
 
@@ -66,7 +68,7 @@ network Curso
     @statistic[totalTurmas](title="Total Turmas"; record=stats; unit=ms);
     @statistic[totalMatriculas](title="Total Matriculas"; record=stats; unit=ms);
     int capacidadeTurma = 200;
-    int numeroPeriodos = 9;
+    int numeroPeriodos = 10;
     types:
         channel D extends ned.DatarateChannel
         {
