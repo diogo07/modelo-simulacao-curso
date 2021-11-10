@@ -7,9 +7,6 @@ simple Periodo
         @display("i=block/network;");
         @signal[tamanhoTurma](type="long");
         @signal[tamanhoFilaEspera](type="long");
-        @signal[quantidadeEvadidosGeral](type="long");
-        @signal[quantidadeReprovadosGeral](type="long");
-        @signal[quantidadeGeral](type="long");
         @signal[totalPorSemestre*](type=simtime_t);
         @signal[evadidosPorSemestre*](type=simtime_t);
         @signal[reprovadosPorSemestre*](type=simtime_t);
@@ -18,8 +15,6 @@ simple Periodo
         @signal[duracaoTransicaoPeriodo*](type=simtime_t);
         @statistic[tamanhoTurma](title="Turma"; record=stats; unit=ms);
         @statistic[tamanhoFilaEspera](title="Fila de Espera"; record=stats; unit=ms);
-        @statistic[quantidadeEvadidosGeral](title="Evadidos Geral"; record=stats; unit=ms);
-        @statistic[quantidadeReprovadosGeral](title="Reprovados Geral"; record=stats; unit=ms);
         @statisticTemplate[totalPorSemestreTemplate](title="Total por Semestre"; record=stats; unit=ms);
         @statisticTemplate[evadidosPorSemestreTemplate](title="Evadidos por Semestre"; record=stats; unit=ms);
         @statisticTemplate[reprovadosPorSemestreTemplate](title="Reprovados por Semestre"; record=stats; unit=ms);
@@ -57,18 +52,14 @@ simple Fim
 network Curso
 {
     @display("bgb=2058.156,1930.248");
-    @signal[totalEvadidos](type="long");
     @signal[totalAlunos](type="long");
     @signal[totalTurmas](type="long");
     @signal[totalMatriculas](type="long");
-    @signal[totalFormados](type="long");
-    @statistic[totalFormados](title="Formados"; record=stats; unit=ms);
-    @statistic[totalEvadidos](title="Total Evadidos"; record=stats; unit=ms);
     @statistic[totalAlunos](title="Total Alunos"; record=stats; unit=ms);
     @statistic[totalTurmas](title="Total Turmas"; record=stats; unit=ms);
     @statistic[totalMatriculas](title="Total Matriculas"; record=stats; unit=ms);
     int capacidadeTurma = 200;
-    int numeroPeriodos = 10;
+    int numeroPeriodos = 9;
     types:
         channel D extends ned.DatarateChannel
         {
