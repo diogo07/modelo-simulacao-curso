@@ -83,17 +83,27 @@ void Periodo::avaliarAlunoPorEvasaoEreprovacao(Aluno *aluno) {
 
         } else {
 
-            aluno->setSaidaPeriodo(periodoAtual - 1, (int) tempo.dbl());
-            emit(aprovadosPorSemestre[duracaoVinculo - 1], 1);
-            int duracao = (int) ((aluno->getSaidaPeriodo(periodoAtual - 1) - aluno->getEntradaPeriodo(periodoAtual - 1))/6);
-            emit(duracaoTransicaoPeriodo[duracao], 1);
-
-            if (graduar(duracaoVinculo) || numeroPeriodos == periodoAtual) {
+            if (graduar(duracaoVinculo)) {
                 emit(graduadosPorSemestre[duracaoVinculo - 1], 1);
+                aluno->setSaidaPeriodo(periodoAtual - 1, (int) tempo.dbl());
+                emit(aprovadosPorSemestre[duracaoVinculo - 1], 1);
+                int duracao = (int) ((aluno->getSaidaPeriodo(periodoAtual - 1) - aluno->getEntradaPeriodo(periodoAtual - 1))/6);
+                emit(duracaoTransicaoPeriodo[duracao], 1);
                 cancelAndDelete(aluno);
-            }
-            else {
-                send(aluno, "saida", portaSaida);
+            } else {
+                if(periodoAtual == numeroPeriodos){
+                    emit(reprovadosPorSemestre[duracaoVinculo - 1], 1);
+                    aluno->setReprovacoes(periodoAtual - 1, aluno->getReprovacoes(periodoAtual - 1) + 1);
+                    send(aluno, "saida", portaSaidaInicialReprovacao + capacidadeTurma);
+                } else {
+                    aluno->setSaidaPeriodo(periodoAtual - 1, (int) tempo.dbl());
+                    emit(aprovadosPorSemestre[duracaoVinculo - 1], 1);
+                    int duracao = (int) ((aluno->getSaidaPeriodo(periodoAtual - 1) - aluno->getEntradaPeriodo(periodoAtual - 1))/6);
+                    emit(duracaoTransicaoPeriodo[duracao], 1);
+                    send(aluno, "saida", portaSaida);
+                }
+
+
             }
         }
     }
