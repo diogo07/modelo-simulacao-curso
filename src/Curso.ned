@@ -20,7 +20,7 @@ simple Periodo
         @statisticTemplate[reprovadosPorSemestreTemplate](title="Reprovados por Semestre"; record=stats; unit=ms);
         @statisticTemplate[aprovadosPorSemestreTemplate](title="Aprovados por Semestre"; record=stats; unit=ms);
         @statisticTemplate[graduadosPorSemestreTemplate](title="Graduados por Semestre"; record=stats; unit=ms);
-        @statisticTemplate[duracaoTransicaoPeriodoTemplate](title="Duração Transição Periodo"; record=stats; unit=ms);
+        @statisticTemplate[duracaoTransicaoPeriodoTemplate](title="Duraï¿½ï¿½o Transiï¿½ï¿½o Periodo"; record=stats; unit=ms);
 
         int capacidadeTurma;
         int numero;
@@ -58,8 +58,8 @@ network Curso
     @statistic[totalAlunos](title="Total Alunos"; record=stats; unit=ms);
     @statistic[totalTurmas](title="Total Turmas"; record=stats; unit=ms);
     @statistic[totalMatriculas](title="Total Matriculas"; record=stats; unit=ms);
-    int capacidadeTurma = 200;
-    int numeroPeriodos = 10;
+    int capacidadeTurma = 70;
+    int numeroPeriodos = 9;
     types:
         channel D extends ned.DatarateChannel
         {
