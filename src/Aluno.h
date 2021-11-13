@@ -12,6 +12,7 @@ private:
     bool novato;
     double entrada;
     double saida;
+    int duracaoVinculo;
     int reprovacoes [10] = {};
     int entradaPeriodo [10] = {};
     int saidaPeriodo [10] = {};
@@ -25,6 +26,7 @@ public:
     virtual void setEntradaPeriodo(int index, int entrada);
     virtual void setSaidaPeriodo(int index, int saida);
     virtual void setNovato(bool novato);
+    virtual void setDuracaoVinculo(int duracaoVinculo);
 
     virtual void setEntrada(double entrada);
     virtual void setSaida(double saida);
@@ -36,6 +38,7 @@ public:
     virtual int getSaidaPeriodo(int index);
     virtual int getTotalReprovacoes();
     virtual bool getNovato();
+    virtual int getDuracaoVinculo();
     virtual double getEntrada();
     virtual double getSaida();
 

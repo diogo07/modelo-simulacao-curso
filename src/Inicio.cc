@@ -57,6 +57,7 @@ void Inicio::enviarTurma(int tempo) {
     for (int i = 0; i < tamanhoTurma; i++) {
         Aluno *aluno = new Aluno();
         aluno->setNovato(true);
+        aluno->setDuracaoVinculo(0);
         aluno->setEntrada(tempo * 6.0);
         aluno->setEntradaPeriodo(0, tempo * 6.0);
         scheduleAt((SimTime)(tempo * 6.0), aluno);

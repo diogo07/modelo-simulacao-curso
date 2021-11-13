@@ -35,6 +35,10 @@ void Aluno::setNovato(bool novato){
     this->novato = novato;
 }
 
+void Aluno::setDuracaoVinculo(int duracaoVinculo){
+    this->duracaoVinculo = duracaoVinculo;
+}
+
 void Aluno::setEntrada(double entrada){
     this->entrada = entrada;
 }
@@ -74,6 +78,10 @@ int Aluno::getTotalReprovacoes(){
 
 bool Aluno::getNovato(){
     return this->novato;
+}
+
+int Aluno::getDuracaoVinculo(){
+    return this->duracaoVinculo;
 }
 
 double Aluno::getEntrada(){
