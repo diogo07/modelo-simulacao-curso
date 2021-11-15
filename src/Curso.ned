@@ -58,8 +58,8 @@ network Curso
     @statistic[totalAlunos](title="Total Alunos"; record=stats; unit=ms);
     @statistic[totalTurmas](title="Total Turmas"; record=stats; unit=ms);
     @statistic[totalMatriculas](title="Total Matriculas"; record=stats; unit=ms);
-    int capacidadeTurma = 50;
-    int numeroPeriodos = 10;
+    int capacidadeTurma = 74;
+    int numeroPeriodos = 9;
     types:
         channel D extends ned.DatarateChannel
         {
