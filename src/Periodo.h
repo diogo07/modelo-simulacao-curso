@@ -23,6 +23,8 @@ class Periodo : public cSimpleModule {
         simsignal_t graduadosPorSemestre[21];
         simsignal_t totalPorSemestre[21];
         simsignal_t duracaoTransicaoPeriodo[21];
+        simsignal_t filaEsperaTamanho[200];
+        simsignal_t turmaTamanho[71];
 
         simsignal_t totalEvadidos;
         simsignal_t quantidadeEvadidosGeral;
@@ -53,18 +55,28 @@ class Periodo : public cSimpleModule {
         int numeroPeriodos; // INDICA A QUANTIDADE DE PERIODOS QUE O FORMATO DE CURSO POSSUI
         int portaSaida;
         int portaSaidaInicialReprovacao;
-        int curso = 3; // 0 - BSI, 1 - BCC, 2 - VETERINARIA, 3 - AGRONOMIA
+        int curso = 1; // 0 - BSI, 1 - BCC, 2 - VETERINARIA, 3 - AGRONOMIA
         int probsTipo = 1; // 0 - POR PERIODO, 1 - POR SEMESTRE, 2 - SEMESTRE E PERIODO
 
 //      ESPECIFICOS
         int contadorDeAlunosNaTurma;
 
 
-/**
- *
- * METRICAS DE EVASAO E REPROVACAO USADAS NO MODELO
- *
- */
+    /**
+     *
+     * CAPACIDADE DA TURMA POR PERÍODO
+     *
+     */
+
+
+       int capacidadesTurma[10] = {70, 70, 40, 40, 40, 40, 40, 40, 40, 40};
+
+
+    /**
+     *
+     * METRICAS DE EVASAO E REPROVACAO USADAS NO MODELO
+     *
+     */
 
 
 //      UFRPE

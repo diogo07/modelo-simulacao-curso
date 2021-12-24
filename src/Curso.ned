@@ -13,9 +13,13 @@ simple Periodo
         @signal[aprovadosPorSemestre*](type=simtime_t);
         @signal[graduadosPorSemestre*](type=simtime_t);
         @signal[duracaoTransicaoPeriodo*](type=simtime_t);
+        @signal[turmaTamanho*](type=simtime_t);
+        @signal[filaEsperaTamanho*](type=simtime_t);
         @statistic[tamanhoTurma](title="Turma"; record=stats; unit=ms);
         @statistic[tamanhoFilaEspera](title="Fila de Espera"; record=stats; unit=ms);
         @statisticTemplate[totalPorSemestreTemplate](title="Total por Semestre"; record=stats; unit=ms);
+        @statisticTemplate[filaEsperaTamanhoTemplate](title="Fila de Espera"; record=stats; unit=ms);
+        @statisticTemplate[turmaTamanhoTemplate](title="Tamanho da Turma"; record=stats; unit=ms);
         @statisticTemplate[evadidosPorSemestreTemplate](title="Evadidos por Semestre"; record=stats; unit=ms);
         @statisticTemplate[reprovadosPorSemestreTemplate](title="Reprovados por Semestre"; record=stats; unit=ms);
         @statisticTemplate[aprovadosPorSemestreTemplate](title="Aprovados por Semestre"; record=stats; unit=ms);

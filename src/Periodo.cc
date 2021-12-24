@@ -35,9 +35,9 @@ void Periodo::handleMessage(cMessage *msg) {
     Aluno *aluno = dynamic_cast<Aluno*>(msg);
 
     if (tempo != tempoAtual) {
-        if(capacidadeTurma > contadorDeAlunosNaTurma && filaEspera.getLength() > 0){
+        if(capacidadesTurma[periodoAtual - 1] > contadorDeAlunosNaTurma && filaEspera.getLength() > 0){
 
-            int vagasDisponiveis = capacidadeTurma - contadorDeAlunosNaTurma;
+            int vagasDisponiveis = capacidadesTurma[periodoAtual - 1] - contadorDeAlunosNaTurma;
             int vagasParaPreencher = (vagasDisponiveis > filaEspera.getLength()) ? filaEspera.getLength() : vagasDisponiveis;
 
             for(int i = 0; i < vagasParaPreencher; i++){
@@ -74,7 +74,7 @@ void Periodo::processarAluno(Aluno *aluno) {
 
 void Periodo::adicionarNaTurma(Aluno *aluno) {
 
-    if (contadorDeAlunosNaTurma == capacidadeTurma) { // turma cheia, adiciona na fila de espera
+    if (contadorDeAlunosNaTurma == capacidadesTurma[periodoAtual - 1]) { // turma cheia, adiciona na fila de espera
         filaEspera.insert(aluno);
     } else if (filaEspera.getLength() > 0) { // turma tem capacidade, ent�o verifica se tem aluno na fila de espera
 
@@ -94,9 +94,9 @@ void Periodo::adicionarNaTurma(Aluno *aluno) {
 
 void Periodo::avaliarAlunoPorEvasaoEreprovacao(Aluno *aluno) {
 
-    if(periodoAtual == 1){
-        EV << filaEspera.getLength() << " - " << capacidadeTurma << " - " << portaSaida << " - " << contadorDeAlunosNaTurma << endl;
-    }
+//    if(periodoAtual == 1){
+        EV << filaEspera.getLength() << " - " << capacidadesTurma[periodoAtual - 1] << " - " << portaSaida << " - " << contadorDeAlunosNaTurma << endl;
+//    }
 
     aluno->setNovato(false);
     aluno->setDuracaoVinculo(aluno->getDuracaoVinculo() + 1);
@@ -106,35 +106,35 @@ void Periodo::avaliarAlunoPorEvasaoEreprovacao(Aluno *aluno) {
         aluno->setEntradaPeriodo(periodoAtual - 1, (int) tempo.dbl());
     }
 
-    if (evadir(aluno->getDuracaoVinculo()) || (aluno->getDuracaoVinculo() > 21)) {
+    if (evadir(duracaoVinculo) || (duracaoVinculo > 21)) {
 //        EV << "evadido " << duracaoVinculo << " - " << aluno->getEntrada() << " - " << tempo << endl;
-        emit(evadidosPorSemestre[aluno->getDuracaoVinculo() - 1], 1);
+        emit(evadidosPorSemestre[duracaoVinculo - 1], 1);
         cancelAndDelete(aluno);
     } else {
-        emit(totalPorSemestre[aluno->getDuracaoVinculo() - 1], 1);
+        emit(totalPorSemestre[duracaoVinculo - 1], 1);
         emit(totalMatriculas, 1);
-        if (reprovar(aluno->getDuracaoVinculo())) {
-            emit(reprovadosPorSemestre[aluno->getDuracaoVinculo() - 1], 1);
+        if (reprovar(duracaoVinculo)) {
+            emit(reprovadosPorSemestre[duracaoVinculo - 1], 1);
             aluno->setReprovacoes(periodoAtual - 1, aluno->getReprovacoes(periodoAtual - 1) + 1);
             send(aluno, "saida", capacidadeTurma + portaSaida);
 
         } else {
 
-            if (graduar(aluno->getDuracaoVinculo())) {
-                emit(graduadosPorSemestre[aluno->getDuracaoVinculo() - 1], 1);
+            if (graduar(duracaoVinculo)) {
+                emit(graduadosPorSemestre[duracaoVinculo - 1], 1);
                 aluno->setSaidaPeriodo(periodoAtual - 1, (int) tempo.dbl());
-                emit(aprovadosPorSemestre[aluno->getDuracaoVinculo() - 1], 1);
+                emit(aprovadosPorSemestre[duracaoVinculo - 1], 1);
 //                int duracao = (int) ((aluno->getSaidaPeriodo(periodoAtual - 1) - aluno->getEntradaPeriodo(periodoAtual - 1))/6);
 //                emit(duracaoTransicaoPeriodo[duracao], 1);
                 cancelAndDelete(aluno);
             } else {
                 if(periodoAtual == numeroPeriodos){
-                    emit(reprovadosPorSemestre[aluno->getDuracaoVinculo() - 1], 1);
+                    emit(reprovadosPorSemestre[duracaoVinculo - 1], 1);
                     aluno->setReprovacoes(periodoAtual - 1, aluno->getReprovacoes(periodoAtual - 1) + 1);
                     send(aluno, "saida", capacidadeTurma + portaSaida);
                 } else {
                     aluno->setSaidaPeriodo(periodoAtual - 1, (int) tempo.dbl());
-                    emit(aprovadosPorSemestre[aluno->getDuracaoVinculo() - 1], 1);
+                    emit(aprovadosPorSemestre[duracaoVinculo - 1], 1);
 //                    int duracao = (int) ((aluno->getSaidaPeriodo(periodoAtual - 1) - aluno->getEntradaPeriodo(periodoAtual - 1))/6);
 //                    emit(duracaoTransicaoPeriodo[duracao], 1);
                     send(aluno, "saida", portaSaida);
@@ -222,6 +222,29 @@ bool Periodo::graduar(int duracaoVinculo) {
 
 void Periodo::registerSignalArray() {
 
+
+    for(int i = 0; i < 71; ++i){
+        char signalNameTurmaTamanho[32];
+        sprintf(signalNameTurmaTamanho, "turmaTamanho%d", i);
+        simsignal_t signalTurmaTamanho = registerSignal(signalNameTurmaTamanho);
+        cProperty *statisticTemplateTurmaTamanho = getProperties()->get("statisticTemplate", "turmaTamanhoTemplate");
+        getEnvir()->addResultRecorders(this, signalTurmaTamanho, signalNameTurmaTamanho, statisticTemplateTurmaTamanho);
+        turmaTamanho[i] = signalTurmaTamanho;
+    }
+
+    for (int i = 0; i < 200; ++i) {
+        char signalNameFilaEsperaTamanho[32];
+        sprintf(signalNameFilaEsperaTamanho, "filaEsperaTamanho%d", i);
+        simsignal_t signalFilaEsperaTamanho = registerSignal(signalNameFilaEsperaTamanho);
+        cProperty *statisticTemplateFilaEsperaTamanho = getProperties()->get(
+                "statisticTemplate", "filaEsperaTamanhoTemplate");
+        getEnvir()->addResultRecorders(this, signalFilaEsperaTamanho,
+                signalNameFilaEsperaTamanho, statisticTemplateFilaEsperaTamanho);
+        filaEsperaTamanho[i] = signalFilaEsperaTamanho;
+    }
+
+
+
     int semestres = 21;
 
     //    INICIA VARI�VEIS DE STATISTICS DE EVAS�O, GRADUA��O E REPROVA��O POR SEMESTRE
@@ -276,6 +299,9 @@ void Periodo::registerSignalArray() {
 void Periodo::emitirDadosDoPeriodo() {
     emit(tamanhoTurma, contadorDeAlunosNaTurma);
     emit(tamanhoFilaEspera, filaEspera.getLength());
+    emit(turmaTamanho[contadorDeAlunosNaTurma], 1);
+    emit(filaEsperaTamanho[filaEspera.getLength()], 1);
+
     contadorDeAlunosNaTurma = 0;
 }
 
