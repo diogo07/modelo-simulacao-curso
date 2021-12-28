@@ -43,22 +43,19 @@ void Periodo::handleMessage(cMessage *msg) {
             for(int i = 0; i < vagasParaPreencher; i++){
                portaSaida++;
                 Aluno *alunoDaFila = check_and_cast<Aluno*>(filaEspera.pop());
-                turma.insert(alunoDaFila);
-                Aluno *alunoDaTurma = check_and_cast<Aluno*>(turma.pop());
                 contadorDeAlunosNaTurma++;
-                avaliarAlunoPorEvasaoEreprovacao(alunoDaTurma);
+                avaliarAlunoPorEvasaoEreprovacao(alunoDaFila);
             }
 
-           for(int j = 0; j < filaEspera.getLength(); j++){
-               Aluno *al = check_and_cast<Aluno*>(filaEspera.get(j));
-               int duracaoVinculo = (tempo.dbl() - al->getEntrada()) / 6;
-               if(evadir(duracaoVinculo)){
-                   EV << "---- " << filaEspera.getLength() << " - " << capacidadesTurma[periodoAtual - 1] << " - " << duracaoVinculo << " - " << contadorDeAlunosNaTurma << endl;
-                   emit(evadidosPorSemestre[duracaoVinculo - 1], 1);
-                   filaEspera.remove(al);
-                   cancelAndDelete(al);
-               }
-           }
+//           for(int j = 0; j < filaEspera.getLength(); j++){
+//               Aluno *al = check_and_cast<Aluno*>(filaEspera.get(j));
+//               int duracaoVinculo = (tempo.dbl() - al->getEntrada()) / 6;
+//               if(evadir(duracaoVinculo)){
+//                   emit(evadidosPorSemestre[duracaoVinculo - 1], 1);
+//                   filaEspera.remove(al);
+//                   cancelAndDelete(al);
+//               }
+//           }
         }
         emitirDadosDoPeriodo();
         tempo = tempoAtual;
@@ -248,7 +245,7 @@ void Periodo::registerSignalArray() {
         turmaTamanho[i] = signalTurmaTamanho;
     }
 
-    for (int i = 0; i < 200; ++i) {
+    for (int i = 0; i < 10000; ++i) {
         char signalNameFilaEsperaTamanho[32];
         sprintf(signalNameFilaEsperaTamanho, "filaEsperaTamanho%d", i);
         simsignal_t signalFilaEsperaTamanho = registerSignal(signalNameFilaEsperaTamanho);
@@ -313,10 +310,13 @@ void Periodo::registerSignalArray() {
 }
 
 void Periodo::emitirDadosDoPeriodo() {
+    EV << "Emitir dados da turma " << contadorDeAlunosNaTurma << " " << filaEspera.getLength() << endl;
     emit(tamanhoTurma, contadorDeAlunosNaTurma);
     emit(tamanhoFilaEspera, filaEspera.getLength());
     emit(turmaTamanho[contadorDeAlunosNaTurma], 1);
     emit(filaEsperaTamanho[filaEspera.getLength()], 1);
+
+
 
     contadorDeAlunosNaTurma = 0;
 }
