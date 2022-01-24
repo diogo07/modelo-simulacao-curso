@@ -12,8 +12,8 @@ class Inicio : public cSimpleModule {
     int tamanhoTurma = 40;
     int numeroExecucoes = 1000;
     bool executarPorTempoIndeterminado = false;
-    simsignal_t totalAlunos;
-    simsignal_t totalTurmas;
+//    simsignal_t totalAlunos;
+//    simsignal_t totalTurmas;
   protected:
     virtual void initialize() override;
     virtual void handleMessage(cMessage *msg) override;
@@ -23,8 +23,8 @@ class Inicio : public cSimpleModule {
 Define_Module(Inicio);
 
 void Inicio::initialize() {
-    totalAlunos = registerSignal("totalAlunos");
-    totalTurmas = registerSignal("totalTurmas");
+//    totalAlunos = registerSignal("totalAlunos");
+//    totalTurmas = registerSignal("totalTurmas");
 
     if(executarPorTempoIndeterminado){
         enviarTurma(0);
@@ -61,8 +61,8 @@ void Inicio::enviarTurma(int tempo) {
         aluno->setEntrada(tempo * 6.0);
         aluno->setEntradaPeriodo(0, tempo * 6.0);
         scheduleAt((SimTime)(tempo * 6.0), aluno);
-        emit(totalAlunos, 1);
+//        emit(totalAlunos, 1);
     }
 
-    emit(totalTurmas, 1);
+//    emit(totalTurmas, 1);
 }

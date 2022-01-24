@@ -12,9 +12,9 @@ Periodo::~Periodo() {}
 Define_Module(Periodo);
 
 void Periodo::initialize() {
-    tamanhoFilaEspera = registerSignal("tamanhoFilaEspera");
-    tamanhoTurma = registerSignal("tamanhoTurma");
-    totalMatriculas = registerSignal("totalMatriculas");
+//    tamanhoFilaEspera = registerSignal("tamanhoFilaEspera");
+//    tamanhoTurma = registerSignal("tamanhoTurma");
+//    totalMatriculas = registerSignal("totalMatriculas");
 
     registerSignalArray();
 
@@ -116,8 +116,8 @@ void Periodo::avaliarAlunoPorEvasaoEreprovacao(Aluno *aluno) {
         emit(evadidosPorSemestre[duracaoVinculo - 1], 1);
         cancelAndDelete(aluno);
     } else {
-        emit(totalPorSemestre[duracaoVinculo - 1], 1);
-        emit(totalMatriculas, 1);
+//        emit(totalPorSemestre[duracaoVinculo - 1], 1);
+//        emit(totalMatriculas, 1);
         if (reprovar(duracaoVinculo)) {
             emit(reprovadosPorSemestre[duracaoVinculo - 1], 1);
             aluno->setReprovacoes(periodoAtual - 1, aluno->getReprovacoes(periodoAtual - 1) + 1);
@@ -255,47 +255,47 @@ void Periodo::registerSignalArray() {
     //    INICIA VARI�VEIS DE STATISTICS DE EVAS�O, GRADUA��O E REPROVA��O POR SEMESTRE
     for (int s = 0; s < semestres; ++s) {
 
-        char signalNameTotalSemestre[32];
+//        char signalNameTotalSemestre[32];
         char signalNameEvadidosSemestre[32];
         char signalNameGraduadosSemestre[32];
         char signalNameReprovadosSemestre[32];
         char signalNameAprovadosSemestre[32];
-        char signalNameDuracaoTransicaoPeriodo[32];
+//        char signalNameDuracaoTransicaoPeriodo[32];
 
-        sprintf(signalNameTotalSemestre, "totalPorSemestre%d", s);
+//        sprintf(signalNameTotalSemestre, "totalPorSemestre%d", s);
         sprintf(signalNameEvadidosSemestre, "evadidosPorSemestre%d", s);
         sprintf(signalNameGraduadosSemestre, "graduadosPorSemestre%d", s);
         sprintf(signalNameReprovadosSemestre, "reprovadosPorSemestre%d", s);
         sprintf(signalNameAprovadosSemestre, "aprovadosPorSemestre%d", s);
-        sprintf(signalNameDuracaoTransicaoPeriodo, "duracaoTransicaoPeriodo%d", s);
+//        sprintf(signalNameDuracaoTransicaoPeriodo, "duracaoTransicaoPeriodo%d", s);
 
-        simsignal_t signalTotalSemestre = registerSignal(signalNameTotalSemestre);
+//        simsignal_t signalTotalSemestre = registerSignal(signalNameTotalSemestre);
         simsignal_t signalEvadidosSemestre = registerSignal(signalNameEvadidosSemestre);
         simsignal_t signalGraduadosSemestre = registerSignal(signalNameGraduadosSemestre);
         simsignal_t signalReprovadosSemestre = registerSignal(signalNameReprovadosSemestre);
         simsignal_t signalAprovadosSemestre = registerSignal(signalNameAprovadosSemestre);
-        simsignal_t signalDuracaoTransicaoPeriodo = registerSignal(signalNameDuracaoTransicaoPeriodo);
+//        simsignal_t signalDuracaoTransicaoPeriodo = registerSignal(signalNameDuracaoTransicaoPeriodo);
 
-        cProperty *statisticTemplateTotalSemestre = getProperties()->get("statisticTemplate", "totalPorSemestreTemplate");
+//        cProperty *statisticTemplateTotalSemestre = getProperties()->get("statisticTemplate", "totalPorSemestreTemplate");
         cProperty *statisticTemplateEvadidosSemestre = getProperties()->get("statisticTemplate", "evadidosPorSemestreTemplate");
         cProperty *statisticTemplateGraduadosSemestre = getProperties()->get("statisticTemplate", "graduadosPorSemestreTemplate");
         cProperty *statisticTemplateReprovadosSemestre = getProperties()->get("statisticTemplate", "reprovadosPorSemestreTemplate");
         cProperty *statisticTemplateAprovadosSemestre = getProperties()->get("statisticTemplate", "aprovadosPorSemestreTemplate");
-        cProperty *statisticTemplateDuracaoTransicaoPeriodo = getProperties()->get("statisticTemplate", "duracaoTransicaoPeriodoTemplate");
+//        cProperty *statisticTemplateDuracaoTransicaoPeriodo = getProperties()->get("statisticTemplate", "duracaoTransicaoPeriodoTemplate");
 
-        getEnvir()->addResultRecorders(this, signalTotalSemestre, signalNameTotalSemestre, statisticTemplateTotalSemestre);
+//        getEnvir()->addResultRecorders(this, signalTotalSemestre, signalNameTotalSemestre, statisticTemplateTotalSemestre);
         getEnvir()->addResultRecorders(this, signalEvadidosSemestre, signalNameEvadidosSemestre, statisticTemplateEvadidosSemestre);
         getEnvir()->addResultRecorders(this, signalGraduadosSemestre, signalNameGraduadosSemestre, statisticTemplateGraduadosSemestre);
         getEnvir()->addResultRecorders(this, signalReprovadosSemestre, signalNameReprovadosSemestre, statisticTemplateReprovadosSemestre);
         getEnvir()->addResultRecorders(this, signalAprovadosSemestre, signalNameAprovadosSemestre, statisticTemplateAprovadosSemestre);
-        getEnvir()->addResultRecorders(this, signalDuracaoTransicaoPeriodo, signalNameDuracaoTransicaoPeriodo, statisticTemplateDuracaoTransicaoPeriodo);
+//        getEnvir()->addResultRecorders(this, signalDuracaoTransicaoPeriodo, signalNameDuracaoTransicaoPeriodo, statisticTemplateDuracaoTransicaoPeriodo);
 
-        totalPorSemestre[s] = signalTotalSemestre;
+//        totalPorSemestre[s] = signalTotalSemestre;
         evadidosPorSemestre[s] = signalEvadidosSemestre;
         graduadosPorSemestre[s] = signalGraduadosSemestre;
         reprovadosPorSemestre[s] = signalReprovadosSemestre;
         aprovadosPorSemestre[s] = signalAprovadosSemestre;
-        duracaoTransicaoPeriodo[s] = signalDuracaoTransicaoPeriodo;
+//        duracaoTransicaoPeriodo[s] = signalDuracaoTransicaoPeriodo;
    }
 
 
@@ -303,8 +303,8 @@ void Periodo::registerSignalArray() {
 
 void Periodo::emitirDadosDoPeriodo() {
     EV << "Emitir dados da turma " << contadorDeAlunosNaTurma << " " << filaEspera.getLength() << endl;
-    emit(tamanhoTurma, contadorDeAlunosNaTurma);
-    emit(tamanhoFilaEspera, filaEspera.getLength());
+//    emit(tamanhoTurma, contadorDeAlunosNaTurma);
+//    emit(tamanhoFilaEspera, filaEspera.getLength());
     emit(turmaTamanho[contadorDeAlunosNaTurma], 1);
     emit(filaEsperaTamanho[filaEspera.getLength()], 1);
 

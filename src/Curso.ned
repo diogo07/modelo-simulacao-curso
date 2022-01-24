@@ -5,26 +5,26 @@ simple Periodo
 {
     parameters:
         @display("i=block/network;");
-        @signal[tamanhoTurma](type="long");
-        @signal[tamanhoFilaEspera](type="long");
-        @signal[totalPorSemestre*](type=simtime_t);
+//        @signal[tamanhoTurma](type="long");
+//        @signal[tamanhoFilaEspera](type="long");
+//        @signal[totalPorSemestre*](type=simtime_t);
         @signal[evadidosPorSemestre*](type=simtime_t);
         @signal[reprovadosPorSemestre*](type=simtime_t);
         @signal[aprovadosPorSemestre*](type=simtime_t);
         @signal[graduadosPorSemestre*](type=simtime_t);
-        @signal[duracaoTransicaoPeriodo*](type=simtime_t);
+//        @signal[duracaoTransicaoPeriodo*](type=simtime_t);
         @signal[turmaTamanho*](type=simtime_t);
         @signal[filaEsperaTamanho*](type=simtime_t);
-        @statistic[tamanhoTurma](title="Turma"; record=stats; unit=ms);
-        @statistic[tamanhoFilaEspera](title="Fila de Espera"; record=stats; unit=ms);
-        @statisticTemplate[totalPorSemestreTemplate](title="Total por Semestre"; record=stats; unit=ms);
+//        @statistic[tamanhoTurma](title="Turma"; record=stats; unit=ms);
+//        @statistic[tamanhoFilaEspera](title="Fila de Espera"; record=stats; unit=ms);
+//        @statisticTemplate[totalPorSemestreTemplate](title="Total por Semestre"; record=stats; unit=ms);
         @statisticTemplate[filaEsperaTamanhoTemplate](title="Fila de Espera"; record=stats; unit=ms);
         @statisticTemplate[turmaTamanhoTemplate](title="Tamanho da Turma"; record=stats; unit=ms);
         @statisticTemplate[evadidosPorSemestreTemplate](title="Evadidos por Semestre"; record=stats; unit=ms);
         @statisticTemplate[reprovadosPorSemestreTemplate](title="Reprovados por Semestre"; record=stats; unit=ms);
         @statisticTemplate[aprovadosPorSemestreTemplate](title="Aprovados por Semestre"; record=stats; unit=ms);
         @statisticTemplate[graduadosPorSemestreTemplate](title="Graduados por Semestre"; record=stats; unit=ms);
-        @statisticTemplate[duracaoTransicaoPeriodoTemplate](title="Dura��o Transi��o Periodo"; record=stats; unit=ms);
+//        @statisticTemplate[duracaoTransicaoPeriodoTemplate](title="Dura��o Transi��o Periodo"; record=stats; unit=ms);
 
         int capacidadeTurma;
         int numero;
@@ -46,8 +46,8 @@ simple Inicio
 simple Fim
 {
     parameters:
-        @signal[quantidadePeriodos](type="long");
-        @statistic[quantidadePeriodos](title="Quantidade de Periodos"; record=stats; unit=ms);
+//        @signal[quantidadePeriodos](type="long");
+//        @statistic[quantidadePeriodos](title="Quantidade de Periodos"; record=stats; unit=ms);
         int capacidadeTurma;
     gates:
         input entrada[capacidadeTurma];
@@ -56,13 +56,13 @@ simple Fim
 network Curso
 {
     @display("bgb=2058.156,1930.248");
-    @signal[totalAlunos](type="long");
-    @signal[totalTurmas](type="long");
-    @signal[totalMatriculas](type="long");
-    @statistic[totalAlunos](title="Total Alunos"; record=stats; unit=ms);
-    @statistic[totalTurmas](title="Total Turmas"; record=stats; unit=ms);
-    @statistic[totalMatriculas](title="Total Matriculas"; record=stats; unit=ms);
-    int capacidadeTurma = 60;
+//    @signal[totalAlunos](type="long");
+//    @signal[totalTurmas](type="long");
+//    @signal[totalMatriculas](type="long");
+//    @statistic[totalAlunos](title="Total Alunos"; record=stats; unit=ms);
+//    @statistic[totalTurmas](title="Total Turmas"; record=stats; unit=ms);
+//    @statistic[totalMatriculas](title="Total Matriculas"; record=stats; unit=ms);
+    int capacidadeTurma = 70;
     int numeroPeriodos = 10;
     types:
         channel D extends ned.DatarateChannel
