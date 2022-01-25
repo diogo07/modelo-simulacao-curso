@@ -1,5 +1,5 @@
-#ifndef __CURSO_Period_H
-#define __CURSO_Period_H
+#ifndef __COURSE_PERIOD_H
+#define __COURSE_PERIOD_H
 
 #include <omnetpp.h>
 
@@ -10,26 +10,13 @@ using namespace omnetpp;
 class Period : public cSimpleModule {
     private:
 
-
-//      CONF DA TURMA
-//        simsignal_t tamanhoFilaEspera;
-//        simsignal_t tamanhoTurma;
-
-//      INFO DO Period
-//        simsignal_t totalMatriculas;
-
         simsignal_t dropoutsPerSemester[21];
         simsignal_t disapprovalsPerSemester[21];
         simsignal_t approvedsPerSemester[21];
         simsignal_t graduatesPerSemester[21];
 //        simsignal_t totalPerSemester[21];
-//        simsignal_t duracaoTransicaoPeriod[21];
-        simsignal_t queueWaitSize[10000];
+        simsignal_t queueWaitSize[1500];
         simsignal_t sizeClass[71];
-
-//        simsignal_t totalEvadidos;
-//        simsignal_t quantidadeEvadidosGeral;
-//        simsignal_t quantidadeReprovadosGeral;
 
         virtual bool compare(Student * student1, Student * student2);
         virtual void addToClass(Student *student);
@@ -47,19 +34,19 @@ class Period : public cSimpleModule {
 
     protected:
 
-//      ATRIBUTOS DE CONFIGURACAO
+        //      ATRIBUTOS DE CONFIGURACAO
         SimTime timing;
         cQueue schoolClass;
         cQueue queueWaiting;
         int classCapacity;
-        int currentPeriod; // O INDICE EQUIVALE AO Period, EX: INDICE 1 = 1 Period
-        int numberOfPeriods; // INDICA A QUANTIDADE DE PeriodS QUE O FORMATO DE CURSO POSSUI
+        int currentPeriod; // O INDICE EQUIVALE AO PERIODO, EX: INDICE 1 = 1 PERIODO
+        int numberOfPeriods; // INDICA A QUANTIDADE DE PERIODOS QUE O FORMATO DE CURSO POSSUI
         int outPort;
         int outPortDisapprovals;
-        int course = 1; // 0 - BSI, 1 - BCC, 2 - VETERINARIA, 3 - AGRONOMIA
-        int probsType = 1; // 0 - POR Period, 1 - POR SEMESTRE, 2 - SEMESTRE E Period
+        int course = 0; // 0 - BSI, 1 - BCC, 2 - VETERINARIA, 3 - AGRONOMIA
+        int probsType = 1; // 0 - POR PERIODO, 1 - POR SEMESTRE, 2 - SEMESTRE E PERIODO
 
-//      ESPECIFICOS
+        //      ESPECIFICOS
         int studentsClassCount;
 
 
@@ -70,7 +57,7 @@ class Period : public cSimpleModule {
      */
 
 
-       int classCapabilities[10] = {70, 70, 70, 70, 40, 40, 40, 40, 40, 40};
+       int classCapabilities[10] = {70, 40, 40, 40, 40, 40, 40, 40, 40, 40};
 
 
     /**
@@ -80,10 +67,7 @@ class Period : public cSimpleModule {
      */
 
 
-//      UFRPE
-
-
-//      POR Period
+       //      POR PERIODO
         double probsDropoutPeriod [2][10] = {
                 {0.2384, 0.1028, 0.0759, 0.0415, 0.0437, 0.0428, 0.0087, 0.0114, 0.0, 0.0},
                 {0.2573, 0.1135, 0.0662, 0.0272, 0.0267, 0.0396, 0.0138, 0.0142, 0.0, 0.0}
@@ -118,7 +102,7 @@ class Period : public cSimpleModule {
                 {0.0, 0.0, 0.0036, 0.0107, 0.0168, 0.0245, 0.0091, 0.0364, 0.0609, 0.3871, 0.2414, 0.2736, 0.3611, 0.2667, 0.2308, 0.125, 0.1667, 0.0, 0.0, 0.0, 0.0, 0.0},
         };
 
-//      POR Period E DURACAO DE VINCULO
+        //      POR PERIODO E DURACAO DE VINCULO
         double probsDropoutPeriodBondDuration[2][10][22] = {
                 {{0.1163, 0.2359, 0.2348, 0.2419, 0.1818, 0.1875, 0.25, 0.2, 0.3333, 0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0383, 0.0902, 0.1842, 0.0784, 0.3438, 0.12, 0.1667, 0.25, 0.0, 0.0, 0.3333, 0.0, 0.5, 0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0095, 0.0851, 0.0204, 0.1786, 0.28, 0.05, 0.3636, 0.1, 0.2, 0.0, 0.6667, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0152, 0.0548, 0.0667, 0.0385, 0.0, 0.2667, 0.1818, 0.1429, 0.0, 0.0, 0.0, 0.0, 0.5, 0.3333, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0444, 0.0769, 0.1579, 0.0, 0.0, 0.0, 0.4, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0217, 0.0, 0.0, 0.0, 0.1333, 0.125, 0.1818, 0.1429, 0.0, 0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0789, 0.0667, 0.125, 0.0, 0.0833, 0.0, 0.0, 0.0, 0.3333, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0833, 0.0, 0.0, 0.1429, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0225, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.25, 0.0, 0.0, 0.0, 0.0, 0.0}},
                 {{0.1375, 0.2397, 0.1647, 0.2979, 0.1875, 0.2941, 0.4, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0402, 0.0933, 0.3125, 0.2, 0.1667, 0.2, 0.3333, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.018, 0.0189, 0.1143, 0.3462, 0.1053, 0.25, 0.2, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0123, 0.0455, 0.0, 0.1111, 0.0769, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0909, 0.0, 0.3333, 0.25, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0952, 0.0714, 0.0, 0.0, 0.3333, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.069, 0.0, 0.0, 0.1667, 0.1667, 0.0, 0.3333, 0.0, 0.5, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3333, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0714, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0}},

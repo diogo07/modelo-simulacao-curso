@@ -5,18 +5,13 @@ simple Period
 {
     parameters:
         @display("i=block/network;");
-//        @signal[tamanhoTurma](type="long");
-//        @signal[tamanhoFilaEspera](type="long");
 //        @signal[totalPerSemester*](type=simtime_t);
         @signal[dropoutsPerSemester*](type=simtime_t);
         @signal[disapprovalsPerSemester*](type=simtime_t);
         @signal[approvedsPerSemester*](type=simtime_t);
         @signal[graduatesPerSemester*](type=simtime_t);
-//        @signal[duracaoTransicaoPeriodo*](type=simtime_t);
         @signal[sizeClass*](type=simtime_t);
         @signal[queueWaitSize*](type=simtime_t);
-//        @statistic[tamanhoTurma](title="Turma"; record=stats; unit=ms);
-//        @statistic[tamanhoFilaEspera](title="Fila de Espera"; record=stats; unit=ms);
 //        @statisticTemplate[totalPerSemesterTemplate](title="Total por Semestre"; record=stats; unit=ms);
         @statisticTemplate[queueWaitSizeTemplate](title="Fila de Espera"; record=stats; unit=ms);
         @statisticTemplate[sizeClassTemplate](title="Tamanho da Turma"; record=stats; unit=ms);
@@ -24,7 +19,6 @@ simple Period
         @statisticTemplate[disapprovalsPerSemesterTemplate](title="Reprovados por Semestre"; record=stats; unit=ms);
         @statisticTemplate[approvedsPerSemesterTemplate](title="Aprovados por Semestre"; record=stats; unit=ms);
         @statisticTemplate[graduatesPerSemesterTemplate](title="Graduados por Semestre"; record=stats; unit=ms);
-//        @statisticTemplate[duracaoTransicaoPeriodoTemplate](title="Dura��o Transi��o Periodo"; record=stats; unit=ms);
 
         int classCapacity;
         int currentPeriod;
@@ -46,8 +40,6 @@ simple Ingress
 simple Graduation
 {
     parameters:
-//        @signal[quantidadePeriodos](type="long");
-//        @statistic[quantidadePeriodos](title="Quantidade de Periodos"; record=stats; unit=ms);
         int classCapacity;
     gates:
         input in[classCapacity];
@@ -56,14 +48,10 @@ simple Graduation
 network Course
 {
     @display("bgb=2058.156,1930.248");
-//    @signal[totalAlunos](type="long");
-//    @signal[totalTurmas](type="long");
 //    @signal[totalMatriculas](type="long");
-//    @statistic[totalAlunos](title="Total Alunos"; record=stats; unit=ms);
-//    @statistic[totalTurmas](title="Total Turmas"; record=stats; unit=ms);
 //    @statistic[totalMatriculas](title="Total Matriculas"; record=stats; unit=ms);
-    int classCapacity = 70;
-    int numberOfPeriods = 9;
+    int classCapacity = 80;
+    int numberOfPeriods = 10;
     types:
         channel D extends ned.DatarateChannel
         {

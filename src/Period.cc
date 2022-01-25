@@ -12,9 +12,6 @@ Period::~Period() {}
 Define_Module(Period);
 
 void Period::initialize() {
-//    tamanhoFilaEspera = registerSignal("tamanhoFilaEspera");
-//    tamanhoTurma = registerSignal("tamanhoTurma");
-//    totalMatriculas = registerSignal("totalMatriculas");
 
     registerSignalArray();
 
@@ -47,15 +44,15 @@ void Period::handleMessage(cMessage *msg) {
                 evaluate(queueStudent);
             }
 
-//           for(int j = 0; j < queueWaiting.getLength(); j++){
-//               Student *al = check_and_cast<Student*>(queueWaiting.get(j));
-//               int bondDuration = (timing.dbl() - al->getEntrada()) / 6;
-//               if(dropout(bondDuration)){
-//                   emit(dropoutsPerSemester[bondDuration - 1], 1);
-//                   queueWaiting.remove(al);
-//                   cancelAndDelete(al);
-//               }
-//           }
+           for(int j = 0; j < queueWaiting.getLength(); j++){
+               Student *al = check_and_cast<Student*>(queueWaiting.get(j));
+               int bondDuration = (timing.dbl() - al->getTimeEntry()) / 6;
+               if(dropout(bondDuration)){
+                   emit(dropoutsPerSemester[bondDuration - 1], 1);
+                   queueWaiting.remove(al);
+                   cancelAndDelete(al);
+               }
+           }
         }
         emitPeriodData();
         timing = currentTime;
@@ -63,7 +60,6 @@ void Period::handleMessage(cMessage *msg) {
     } else {
         outPort++;
     }
-
     processStudent(student);
 
 }
@@ -101,11 +97,7 @@ void Period::addToClass(Student *student) {
 
 void Period::evaluate(Student *student) {
 
-//    if(currentPeriod == 1){
-//    }
-
     student->setBeginner(false);
-//    student->setBondDuration(student->getBondDuration() + 1);
     int bondDuration = (timing.dbl() - student->getTimeEntry()) / 6;
 
     if (student->getEntryPeriod(currentPeriod - 1) == 0) {
@@ -129,8 +121,6 @@ void Period::evaluate(Student *student) {
                 emit(graduatesPerSemester[bondDuration - 1], 1);
                 student->setExitPeriod(currentPeriod - 1, (int) timing.dbl());
 //                emit(approvedsPerSemester[bondDuration - 1], 1);
-//                int duration = (int) ((student->getExitPeriod(currentPeriod - 1) - student->getEntryPeriod(currentPeriod - 1))/6);
-//                emit(duracaoTransicaoPeriod[duration], 1);
                 cancelAndDelete(student);
             } else {
                 if(currentPeriod == numberOfPeriods){
@@ -140,8 +130,6 @@ void Period::evaluate(Student *student) {
                 } else {
                     student->setExitPeriod(currentPeriod - 1, (int) timing.dbl());
                     emit(approvedsPerSemester[bondDuration - 1], 1);
-//                    int duration = (int) ((student->getExitPeriod(currentPeriod - 1) - student->getEntryPeriod(currentPeriod - 1))/6);
-//                    emit(duracaoTransicaoPeriod[duration], 1);
                     send(student, "out", outPort);
                 }
 
@@ -237,7 +225,7 @@ void Period::registerSignalArray() {
         sizeClass[i] = signalSizeClass;
     }
 
-    for (int i = 0; i < 10000; ++i) {
+    for (int i = 0; i < 1500; ++i) {
         char signalNameQueueWaitSize[32];
         sprintf(signalNameQueueWaitSize, "queueWaitSize%d", i);
         simsignal_t signalQueueWaitSize = registerSignal(signalNameQueueWaitSize);
@@ -252,7 +240,7 @@ void Period::registerSignalArray() {
 
     int semesters = 21;
 
-    //    INICIA VARI�VEIS DE STATISTICS DE EVAS�O, GRADUA��O E REPROVA��O POR SEMESTRE
+    //    INICIA VARIAVEIS DE STATISTICS DE EVASAO, GRADUACAO E REPROVACAO POR SEMESTRE
     for (int s = 0; s < semesters; ++s) {
 
 //        char signalNameTotalSemester[32];
@@ -260,42 +248,36 @@ void Period::registerSignalArray() {
         char signalNameGraduatesSemester[32];
         char signalNameDisapprovalsSemester[32];
         char signalNameApprovedsSemester[32];
-//        char signalNameDuracaoTransicaoPeriod[32];
 
 //        sprintf(signalNameTotalSemester, "totalPerSemester%d", s);
         sprintf(signalNameDropoutsSemester, "dropoutsPerSemester%d", s);
         sprintf(signalNameGraduatesSemester, "graduatesPerSemester%d", s);
         sprintf(signalNameDisapprovalsSemester, "disapprovalsPerSemester%d", s);
         sprintf(signalNameApprovedsSemester, "approvedsPerSemester%d", s);
-//        sprintf(signalNameDuracaoTransicaoPeriod, "duracaoTransicaoPeriod%d", s);
 
 //        simsignal_t signalTotalSemester = registerSignal(signalNameTotalSemester);
         simsignal_t signalDropoutsSemester = registerSignal(signalNameDropoutsSemester);
         simsignal_t signalGraduatesSemester = registerSignal(signalNameGraduatesSemester);
         simsignal_t signalDisapprovalsSemester = registerSignal(signalNameDisapprovalsSemester);
         simsignal_t signalApprovedsSemester = registerSignal(signalNameApprovedsSemester);
-//        simsignal_t signalDuracaoTransicaoPeriod = registerSignal(signalNameDuracaoTransicaoPeriod);
 
 //        cProperty *statisticTemplateTotalSemester = getProperties()->get("statisticTemplate", "totalPerSemesterTemplate");
         cProperty *statisticTemplateDropoutsSemester = getProperties()->get("statisticTemplate", "dropoutsPerSemesterTemplate");
         cProperty *statisticTemplateGraduatesSemester = getProperties()->get("statisticTemplate", "graduatesPerSemesterTemplate");
         cProperty *statisticTemplateDisapprovalsSemester = getProperties()->get("statisticTemplate", "disapprovalsPerSemesterTemplate");
         cProperty *statisticTemplateApprovedsSemester = getProperties()->get("statisticTemplate", "approvedsPerSemesterTemplate");
-//        cProperty *statisticTemplateDuracaoTransicaoPeriod = getProperties()->get("statisticTemplate", "duracaoTransicaoPeriodTemplate");
 
 //        getEnvir()->addResultRecorders(this, signalTotalSemester, signalNameTotalSemester, statisticTemplateTotalSemester);
         getEnvir()->addResultRecorders(this, signalDropoutsSemester, signalNameDropoutsSemester, statisticTemplateDropoutsSemester);
         getEnvir()->addResultRecorders(this, signalGraduatesSemester, signalNameGraduatesSemester, statisticTemplateGraduatesSemester);
         getEnvir()->addResultRecorders(this, signalDisapprovalsSemester, signalNameDisapprovalsSemester, statisticTemplateDisapprovalsSemester);
         getEnvir()->addResultRecorders(this, signalApprovedsSemester, signalNameApprovedsSemester, statisticTemplateApprovedsSemester);
-//        getEnvir()->addResultRecorders(this, signalDuracaoTransicaoPeriod, signalNameDuracaoTransicaoPeriod, statisticTemplateDuracaoTransicaoPeriod);
 
 //        totalPerSemester[s] = signalTotalSemester;
         dropoutsPerSemester[s] = signalDropoutsSemester;
         graduatesPerSemester[s] = signalGraduatesSemester;
         disapprovalsPerSemester[s] = signalDisapprovalsSemester;
         approvedsPerSemester[s] = signalApprovedsSemester;
-//        duracaoTransicaoPeriod[s] = signalDuracaoTransicaoPeriod;
    }
 
 
@@ -305,6 +287,9 @@ void Period::emitPeriodData() {
     emit(sizeClass[studentsClassCount], 1);
     emit(queueWaitSize[queueWaiting.getLength()], 1);
 
+    char qSize[40];
+    sprintf(qSize, "Fila de espera: %d", queueWaiting.getLength());
+    bubble(qSize);
     studentsClassCount = 0;
 }
 

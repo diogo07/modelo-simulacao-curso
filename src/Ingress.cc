@@ -1,4 +1,3 @@
-
 #include <string.h>
 #include <omnetpp.h>
 #include <math.h>
@@ -6,16 +5,15 @@
 #include "Student.h"
 using namespace omnetpp;
 
-
-class Ingress : public cSimpleModule {
-  private:
+class Ingress: public cSimpleModule {
+private:
     int outPort = 0;
     int sizeClass = 40;
     int numberOfPlays = 1000;
     bool runUndefinitely = false;
 //    simsignal_t totalStudents;
 //    simsignal_t totalTurmas;
-  protected:
+protected:
     virtual void initialize() override;
     virtual void handleMessage(cMessage *msg) override;
     virtual void sendClass(int indice);
@@ -27,7 +25,7 @@ void Ingress::initialize() {
 //    totalStudents = registerSignal("totalStudents");
 //    totalTurmas = registerSignal("totalTurmas");
 
-    if(runUndefinitely){
+    if (runUndefinitely) {
         sendClass(0);
     } else {
         for (int i = 0; i < numberOfPlays; i++) {
@@ -41,10 +39,10 @@ void Ingress::handleMessage(cMessage *msg) {
 
     Student *student = dynamic_cast<Student*>(msg);
 
-    if(outPort == (sizeClass - 1)){
+    if (outPort == (sizeClass - 1)) {
         outPort = 0;
-        if(runUndefinitely){
-            sendClass(((int)student->getTimeEntry()/6)+1);
+        if (runUndefinitely) {
+            sendClass(((int) student->getTimeEntry() / 6) + 1);
         }
     } else {
         outPort++;
@@ -61,7 +59,7 @@ void Ingress::sendClass(int timing) {
         student->setBondDuration(0);
         student->setTimeEntry(timing * 6.0);
         student->setEntryPeriod(0, timing * 6.0);
-        scheduleAt((SimTime)(timing * 6.0), student);
+        scheduleAt((SimTime) (timing * 6.0), student);
 //        emit(totalStudents, 1);
     }
 
