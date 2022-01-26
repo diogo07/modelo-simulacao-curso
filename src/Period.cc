@@ -31,6 +31,7 @@ void Period::handleMessage(cMessage *msg) {
 
     Student *student = dynamic_cast<Student*>(msg);
 
+    //    tempo mudou, semestre novo
     if (timing != currentTime) {
         if(classCapabilities[currentPeriod - 1] > studentsClassCount && queueWaiting.getLength() > 0){
 
@@ -38,19 +39,20 @@ void Period::handleMessage(cMessage *msg) {
             int vacanciesToFill = (availableVacancies > queueWaiting.getLength()) ? queueWaiting.getLength() : availableVacancies;
 
             for(int i = 0; i < vacanciesToFill; i++){
-               outPort++;
+                outPort++;
                 Student *queueStudent = check_and_cast<Student*>(queueWaiting.pop());
                 studentsClassCount++;
                 evaluate(queueStudent);
             }
 
-           for(int j = 0; j < queueWaiting.getLength(); j++){
-               Student *al = check_and_cast<Student*>(queueWaiting.get(j));
-               int bondDuration = (timing.dbl() - al->getTimeEntry()) / 6;
-               if(dropout(bondDuration)){
-                   emit(dropoutsPerSemester[bondDuration - 1], 1);
-                   queueWaiting.remove(al);
-                   cancelAndDelete(al);
+            //    avaliar evasão para alunos da fila de espera
+            for(int j = 0; j < queueWaiting.getLength(); j++){
+                Student *al = check_and_cast<Student*>(queueWaiting.get(j));
+                int bondDuration = (timing.dbl() - al->getTimeEntry()) / 6;
+                if(dropout(bondDuration)){
+                    emit(dropoutsPerSemester[bondDuration > 21 ? 20 : bondDuration - 1], 1);
+                    queueWaiting.remove(al);
+                    cancelAndDelete(al);
                }
            }
         }
@@ -80,7 +82,7 @@ void Period::addToClass(Student *student) {
 
     if (studentsClassCount == classCapabilities[currentPeriod - 1]) { // turma cheia, adiciona na fila de espera
         queueWaiting.insert(student);
-    } else if (queueWaiting.getLength() > 0) { // turma tem capacidade, entï¿½o verifica se tem student na fila de espera
+    } else if (queueWaiting.getLength() > 0) { // turma tem capacidade, entao verifica se tem student na fila de espera
 
         if (compare(student, check_and_cast<Student*>(queueWaiting.front()))) { // compara o student que chegou com o primeiro
             schoolClass.insert(student);                                          // da fila de espera
@@ -104,7 +106,7 @@ void Period::evaluate(Student *student) {
         student->setEntryPeriod(currentPeriod - 1, (int) timing.dbl());
     }
 
-    if (dropout(bondDuration) || (bondDuration > 21)) {
+    if (dropout(bondDuration) || (bondDuration >= 21)) {
         emit(dropoutsPerSemester[bondDuration - 1], 1);
         cancelAndDelete(student);
     } else {
@@ -120,7 +122,7 @@ void Period::evaluate(Student *student) {
             if (graduate(bondDuration)) {
                 emit(graduatesPerSemester[bondDuration - 1], 1);
                 student->setExitPeriod(currentPeriod - 1, (int) timing.dbl());
-//                emit(approvedsPerSemester[bondDuration - 1], 1);
+                emit(approvedsPerSemester[bondDuration - 1], 1);
                 cancelAndDelete(student);
             } else {
                 if(currentPeriod == numberOfPeriods){
@@ -284,8 +286,8 @@ void Period::registerSignalArray() {
 }
 
 void Period::emitPeriodData() {
-    emit(sizeClass[studentsClassCount], 1);
-    emit(queueWaitSize[queueWaiting.getLength()], 1);
+//    emit(sizeClass[studentsClassCount], 1);
+//    emit(queueWaitSize[queueWaiting.getLength()], 1);
 
     char qSize[40];
     sprintf(qSize, "Fila de espera: %d", queueWaiting.getLength());

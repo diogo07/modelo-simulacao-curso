@@ -57,7 +57,7 @@ class Period : public cSimpleModule {
      */
 
 
-       int classCapabilities[10] = {70, 40, 40, 40, 40, 40, 40, 40, 40, 40};
+       int classCapabilities[10] = {60, 60, 60, 60, 40, 40, 40, 40, 40, 40};
 
 
     /**
