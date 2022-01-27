@@ -10,15 +10,20 @@ simple Period
         @signal[disapprovalsPerSemester*](type=simtime_t);
         @signal[approvedsPerSemester*](type=simtime_t);
         @signal[graduatesPerSemester*](type=simtime_t);
-        @signal[sizeClass*](type=simtime_t);
-        @signal[queueWaitSize*](type=simtime_t);
+        @signal[sizeClass](type=long);
+        @signal[queueWaitSize](type=long);
+//        @signal[sizeClass*](type=simtime_t);
+//        @signal[queueWaitSize*](type=simtime_t);
 //        @statisticTemplate[totalPerSemesterTemplate](title="Total por Semestre"; record=stats; unit=ms);
-        @statisticTemplate[queueWaitSizeTemplate](title="Fila de Espera"; record=stats; unit=ms);
-        @statisticTemplate[sizeClassTemplate](title="Tamanho da Turma"; record=stats; unit=ms);
-        @statisticTemplate[dropoutsPerSemesterTemplate](title="Evadidos por Semestre"; record=stats; unit=ms);
-        @statisticTemplate[disapprovalsPerSemesterTemplate](title="Reprovados por Semestre"; record=stats; unit=ms);
-        @statisticTemplate[approvedsPerSemesterTemplate](title="Aprovados por Semestre"; record=stats; unit=ms);
-        @statisticTemplate[graduatesPerSemesterTemplate](title="Graduados por Semestre"; record=stats; unit=ms);
+		@statistic[queueWaitSize](title="Fila de Espera"; record=vector; unit=ms);
+        @statistic[sizeClass](title="Tamanho da Turma"; record=vector; unit=ms);
+        
+//        @statisticTemplate[queueWaitSizeTemplate](title="Fila de Espera"; record=vector; unit=ms);
+//        @statisticTemplate[sizeClassTemplate](title="Tamanho da Turma"; record=vector; unit=ms);
+        @statisticTemplate[dropoutsPerSemesterTemplate](title="Evadidos por Semestre"; record=vector; unit=ms);
+        @statisticTemplate[disapprovalsPerSemesterTemplate](title="Reprovados por Semestre"; record=vector; unit=ms);
+        @statisticTemplate[approvedsPerSemesterTemplate](title="Aprovados por Semestre"; record=vector; unit=ms);
+        @statisticTemplate[graduatesPerSemesterTemplate](title="Graduados por Semestre"; record=vector; unit=ms);
 
         int classCapacity;
         int currentPeriod;

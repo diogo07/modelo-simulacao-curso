@@ -15,8 +15,10 @@ class Period : public cSimpleModule {
         simsignal_t approvedsPerSemester[21];
         simsignal_t graduatesPerSemester[21];
 //        simsignal_t totalPerSemester[21];
-        simsignal_t queueWaitSize[1500];
-        simsignal_t sizeClass[71];
+//        simsignal_t queueWaitSize[9000];
+        simsignal_t queueWaitSize;
+//        simsignal_t sizeClass[71];
+        simsignal_t sizeClass;
 
         virtual bool compare(Student * student1, Student * student2);
         virtual void addToClass(Student *student);
@@ -24,7 +26,7 @@ class Period : public cSimpleModule {
         virtual bool dropout(int semestre);
         virtual bool disapprove(int semestre);
         virtual bool graduate(int semestre);
-        virtual void emitPeriodData();
+        virtual void emitStatisticsPeriod();
         virtual void processStudent(Student *student);
         virtual void registerSignalArray();
         virtual float randomValue();
@@ -57,7 +59,7 @@ class Period : public cSimpleModule {
      */
 
 
-       int classCapabilities[10] = {60, 60, 60, 60, 40, 40, 40, 40, 40, 40};
+       int classCapabilities[10] = {70, 40, 40, 40, 40, 40, 40, 40, 40, 40};
 
 
     /**

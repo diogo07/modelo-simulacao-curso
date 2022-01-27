@@ -13,6 +13,9 @@ Define_Module(Period);
 
 void Period::initialize() {
 
+    queueWaitSize = registerSignal("queueWaitSize");
+    sizeClass = registerSignal("sizeClass");
+
     registerSignalArray();
 
     classCapacity = par("classCapacity");
@@ -49,14 +52,14 @@ void Period::handleMessage(cMessage *msg) {
             for(int j = 0; j < queueWaiting.getLength(); j++){
                 Student *al = check_and_cast<Student*>(queueWaiting.get(j));
                 int bondDuration = (timing.dbl() - al->getTimeEntry()) / 6;
-                if(dropout(bondDuration)){
+                if((dropout(bondDuration)) || (bondDuration >= 21)){
                     emit(dropoutsPerSemester[bondDuration > 21 ? 20 : bondDuration - 1], 1);
                     queueWaiting.remove(al);
                     cancelAndDelete(al);
                }
            }
         }
-        emitPeriodData();
+        emitStatisticsPeriod();
         timing = currentTime;
         outPort = 0;
     } else {
@@ -107,7 +110,7 @@ void Period::evaluate(Student *student) {
     }
 
     if (dropout(bondDuration) || (bondDuration >= 21)) {
-        emit(dropoutsPerSemester[bondDuration - 1], 1);
+        emit(dropoutsPerSemester[bondDuration > 21 ? 20 : bondDuration - 1], 1);
         cancelAndDelete(student);
     } else {
 //        emit(totalPerSemester[bondDuration - 1], 1);
@@ -218,25 +221,25 @@ bool Period::graduate(int bondDuration) {
 void Period::registerSignalArray() {
 
 
-    for(int i = 0; i < 71; ++i){
-        char signalNameSizeClass[32];
-        sprintf(signalNameSizeClass, "sizeClass%d", i);
-        simsignal_t signalSizeClass = registerSignal(signalNameSizeClass);
-        cProperty *statisticTemplateSizeClass = getProperties()->get("statisticTemplate", "sizeClassTemplate");
-        getEnvir()->addResultRecorders(this, signalSizeClass, signalNameSizeClass, statisticTemplateSizeClass);
-        sizeClass[i] = signalSizeClass;
-    }
-
-    for (int i = 0; i < 1500; ++i) {
-        char signalNameQueueWaitSize[32];
-        sprintf(signalNameQueueWaitSize, "queueWaitSize%d", i);
-        simsignal_t signalQueueWaitSize = registerSignal(signalNameQueueWaitSize);
-        cProperty *statisticTemplateQueueWaitSize = getProperties()->get(
-                "statisticTemplate", "queueWaitSizeTemplate");
-        getEnvir()->addResultRecorders(this, signalQueueWaitSize,
-                signalNameQueueWaitSize, statisticTemplateQueueWaitSize);
-        queueWaitSize[i] = signalQueueWaitSize;
-    }
+//    for(int i = 0; i < 71; ++i){
+//        char signalNameSizeClass[32];
+//        sprintf(signalNameSizeClass, "sizeClass%d", i);
+//        simsignal_t signalSizeClass = registerSignal(signalNameSizeClass);
+//        cProperty *statisticTemplateSizeClass = getProperties()->get("statisticTemplate", "sizeClassTemplate");
+//        getEnvir()->addResultRecorders(this, signalSizeClass, signalNameSizeClass, statisticTemplateSizeClass);
+//        sizeClass[i] = signalSizeClass;
+//    }
+//
+//    for (int i = 0; i < 9000; ++i) {
+//        char signalNameQueueWaitSize[32];
+//        sprintf(signalNameQueueWaitSize, "queueWaitSize%d", i);
+//        simsignal_t signalQueueWaitSize = registerSignal(signalNameQueueWaitSize);
+//        cProperty *statisticTemplateQueueWaitSize = getProperties()->get(
+//                "statisticTemplate", "queueWaitSizeTemplate");
+//        getEnvir()->addResultRecorders(this, signalQueueWaitSize,
+//                signalNameQueueWaitSize, statisticTemplateQueueWaitSize);
+//        queueWaitSize[i] = signalQueueWaitSize;
+//    }
 
 
 
@@ -285,13 +288,16 @@ void Period::registerSignalArray() {
 
 }
 
-void Period::emitPeriodData() {
-//    emit(sizeClass[studentsClassCount], 1);
-//    emit(queueWaitSize[queueWaiting.getLength()], 1);
+void Period::emitStatisticsPeriod() {
 
-    char qSize[40];
-    sprintf(qSize, "Fila de espera: %d", queueWaiting.getLength());
-    bubble(qSize);
+    EV << studentsClassCount << " - " << queueWaiting.getLength() << endl;
+
+    emit(sizeClass, studentsClassCount);
+    emit(queueWaitSize, queueWaiting.getLength());
+
+    char queueSize[40];
+    sprintf(queueSize, "Fila de espera: %d", queueWaiting.getLength());
+    bubble(queueSize);
     studentsClassCount = 0;
 }
 
