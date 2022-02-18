@@ -55,8 +55,8 @@ network Course
     @display("bgb=2058.156,1930.248");
 //    @signal[totalMatriculas](type="long");
 //    @statistic[totalMatriculas](title="Total Matriculas"; record=stats; unit=ms);
-    int classCapacity = 80;
-    int numberOfPeriods = 10;
+    int classCapacity = 70;
+    int numberOfPeriods = 9;
     types:
         channel D extends ned.DatarateChannel
         {

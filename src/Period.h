@@ -30,6 +30,7 @@ class Period : public cSimpleModule {
         virtual void processStudent(Student *student);
         virtual void registerSignalArray();
         virtual float randomValue();
+        virtual void addToQueueWaiting(Student *student1);
 
     public:
         virtual ~Period() override;
@@ -45,7 +46,7 @@ class Period : public cSimpleModule {
         int numberOfPeriods; // INDICA A QUANTIDADE DE PERIODOS QUE O FORMATO DE CURSO POSSUI
         int outPort;
         int outPortDisapprovals;
-        int course = 0; // 0 - BSI, 1 - BCC, 2 - VETERINARIA, 3 - AGRONOMIA
+        int course = 1; // 0 - BSI, 1 - BCC, 2 - VETERINARIA, 3 - AGRONOMIA
         int probsType = 1; // 0 - POR PERIODO, 1 - POR SEMESTRE, 2 - SEMESTRE E PERIODO
 
         //      ESPECIFICOS
@@ -59,7 +60,7 @@ class Period : public cSimpleModule {
      */
 
 
-       int classCapabilities[10] = {70, 40, 40, 40, 40, 40, 40, 40, 40, 40};
+       int classCapabilities[10] = {70, 70, 70, 70, 40, 40, 40, 40, 40, 40};
 
 
     /**

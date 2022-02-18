@@ -36,6 +36,9 @@ void Period::handleMessage(cMessage *msg) {
 
     //    tempo mudou, semestre novo
     if (timing != currentTime) {
+        //      verifica se a quantidade de alunos na turma é menor que a capacidade suportada
+        //      e se existe algum aluno na fila de espera
+        //      caso positivo, avalia os alunos
         if(classCapabilities[currentPeriod - 1] > studentsClassCount && queueWaiting.getLength() > 0){
 
             int availableVacancies = classCapabilities[currentPeriod - 1] - studentsClassCount;
@@ -48,11 +51,11 @@ void Period::handleMessage(cMessage *msg) {
                 evaluate(queueStudent);
             }
 
-            //    avaliar evasão para alunos da fila de espera
+            //  avaliar evasão para alunos da fila de espera
             for(int j = 0; j < queueWaiting.getLength(); j++){
                 Student *al = check_and_cast<Student*>(queueWaiting.get(j));
                 int bondDuration = (timing.dbl() - al->getTimeEntry()) / 6;
-                if((dropout(bondDuration)) || (bondDuration >= 21)){
+                if(dropout(bondDuration)){
                     emit(dropoutsPerSemester[bondDuration > 21 ? 20 : bondDuration - 1], 1);
                     queueWaiting.remove(al);
                     cancelAndDelete(al);
@@ -84,7 +87,8 @@ void Period::processStudent(Student *student) {
 void Period::addToClass(Student *student) {
 
     if (studentsClassCount == classCapabilities[currentPeriod - 1]) { // turma cheia, adiciona na fila de espera
-        queueWaiting.insert(student);
+//        queueWaiting.insert(student);
+        addToQueueWaiting(student);
     } else if (queueWaiting.getLength() > 0) { // turma tem capacidade, entao verifica se tem student na fila de espera
 
         if (compare(student, check_and_cast<Student*>(queueWaiting.front()))) { // compara o student que chegou com o primeiro
@@ -92,7 +96,8 @@ void Period::addToClass(Student *student) {
         } else {
             Student *queueStudent = check_and_cast<Student*>(queueWaiting.pop());
             schoolClass.insert(queueStudent);
-            queueWaiting.insert(student);
+//            queueWaiting.insert(student);
+            addToQueueWaiting(student);
         }
 
     } else { // fila de espera vazia, adiciona o student na turma
@@ -109,32 +114,31 @@ void Period::evaluate(Student *student) {
         student->setEntryPeriod(currentPeriod - 1, (int) timing.dbl());
     }
 
-    if (dropout(bondDuration) || (bondDuration >= 21)) {
+    if (dropout(bondDuration)) {
         emit(dropoutsPerSemester[bondDuration > 21 ? 20 : bondDuration - 1], 1);
         cancelAndDelete(student);
     } else {
 //        emit(totalPerSemester[bondDuration - 1], 1);
-//        emit(totalMatriculas, 1);
         if (disapprove(bondDuration)) {
-            emit(disapprovalsPerSemester[bondDuration - 1], 1);
+            emit(disapprovalsPerSemester[bondDuration > 21 ? 20 : bondDuration - 1], 1);
             student->setDisapprovals(currentPeriod - 1, student->getDisapprovals(currentPeriod - 1) + 1);
             send(student, "out", classCapacity + outPort);
 
         } else {
 
             if (graduate(bondDuration)) {
-                emit(graduatesPerSemester[bondDuration - 1], 1);
+                emit(graduatesPerSemester[bondDuration > 21 ? 20 : bondDuration - 1], 1);
                 student->setExitPeriod(currentPeriod - 1, (int) timing.dbl());
-                emit(approvedsPerSemester[bondDuration - 1], 1);
+                emit(approvedsPerSemester[bondDuration > 21 ? 20 : bondDuration - 1], 1);
                 cancelAndDelete(student);
             } else {
                 if(currentPeriod == numberOfPeriods){
-                    emit(disapprovalsPerSemester[bondDuration - 1], 1);
+                    emit(disapprovalsPerSemester[bondDuration > 21 ? 20 : bondDuration - 1], 1);
                     student->setDisapprovals(currentPeriod - 1, student->getDisapprovals(currentPeriod - 1) + 1);
                     send(student, "out", classCapacity + outPort);
                 } else {
                     student->setExitPeriod(currentPeriod - 1, (int) timing.dbl());
-                    emit(approvedsPerSemester[bondDuration - 1], 1);
+                    emit(approvedsPerSemester[bondDuration > 21 ? 20 : bondDuration - 1], 1);
                     send(student, "out", outPort);
                 }
 
@@ -147,17 +151,69 @@ void Period::evaluate(Student *student) {
 
 
 bool Period::compare(Student *student1, Student *student2) {
-    if (student1->getBeginner() && student2->getBeginner()) {
-        return student1->getDisapprovals(currentPeriod - 1)
-                < student2->getDisapprovals(currentPeriod - 1);
-    } else if (student1->getBeginner()) {
-        return true;
-    } else if (student2->getBeginner()) {
-        return false;
-    } else {
-        return student1->getDisapprovals(currentPeriod - 1)
-                < student2->getDisapprovals(currentPeriod - 1);
+    int bondDuration1 = (timing.dbl() - student1->getTimeEntry()) / 6;
+    int bondDuration2 = (timing.dbl() - student2->getTimeEntry()) / 6;
+
+    return bondDuration1 > bondDuration2;
+
+//    if (student1->getBeginner() && student2->getBeginner()) {
+//        return student1->getDisapprovals(currentPeriod - 1)
+//                < student2->getDisapprovals(currentPeriod - 1);
+//    } else if (student1->getBeginner()) {
+//        return true;
+//    } else if (student2->getBeginner()) {
+//        return false;
+//    } else {
+//        return student1->getDisapprovals(currentPeriod - 1)
+//                < student2->getDisapprovals(currentPeriod - 1);
+//    }
+}
+
+void Period::addToQueueWaiting(Student *student) {
+
+    int bondDuration1 = (timing.dbl() - student->getTimeEntry()) / 6;
+    int queueLength = queueWaiting.getLength();
+
+    for(int i = 0; i < queueWaiting.getLength(); i++){
+        Student *studentQueue = check_and_cast<Student*>(queueWaiting.get(i));
+        int bondDuration2 = (timing.dbl() - studentQueue->getTimeEntry()) / 6;
+
+        if(bondDuration1 > bondDuration2){
+            queueWaiting.insertBefore(studentQueue, student);
+            break;
+        }
     }
+
+    if(queueLength == queueWaiting.getLength()){
+        queueWaiting.insert(student);
+    }
+
+    EV << "------------------- INIT -----------------" << endl;
+
+    for(int i = 0; i < queueWaiting.getLength(); i++){
+        Student *studentQueue = check_and_cast<Student*>(queueWaiting.get(i));
+        int bondDuration2 = (timing.dbl() - studentQueue->getTimeEntry()) / 6;
+        EV << "duracao: " << bondDuration2 << endl;
+    }
+
+    EV << "------------------- FINISH -----------------" << endl;
+
+
+//    SimTime t = simTime();
+//
+//
+//    int bondDuration1 = (t.dbl() - student1->getTimeEntry()) / 6;
+//    int bondDuration2 = (t.dbl() - student2->getTimeEntry()) / 6;
+//
+//    if(bondDuration1 < bondDuration2){
+//        return -1;
+//    } else if (bondDuration1 == bondDuration2){
+//        return 0;
+//    } else {
+//        return 1;
+
+//    return 0;
+//    }
 }
 
 float Period::randomValue(){
@@ -289,8 +345,6 @@ void Period::registerSignalArray() {
 }
 
 void Period::emitStatisticsPeriod() {
-
-    EV << studentsClassCount << " - " << queueWaiting.getLength() << endl;
 
     emit(sizeClass, studentsClassCount);
     emit(queueWaitSize, queueWaiting.getLength());
