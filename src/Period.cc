@@ -25,7 +25,6 @@ void Period::initialize() {
     outPort = 0;
     studentsClassCount = 0;
 
-
     srand((int)time(NULL));
 }
 
