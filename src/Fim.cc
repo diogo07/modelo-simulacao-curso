@@ -1,12 +1,11 @@
 #include <string.h>
 #include <omnetpp.h>
 #include <math.h>
-
-#include "Student.h"
+#include "Aluno.h"
 
 
 using namespace omnetpp;
-class Graduation : public cSimpleModule {
+class Fim : public cSimpleModule {
 
 //    simsignal_t totalFormados;
 //    simsignal_t quantidadePeriodos;
@@ -17,24 +16,24 @@ class Graduation : public cSimpleModule {
     virtual void finish() override;
 };
 
-Define_Module(Graduation);
+Define_Module(Fim);
 
-void Graduation::initialize(){
+void Fim::initialize(){
 //    totalFormados = registerSignal("totalFormados");
 //    quantidadePeriodos = registerSignal("quantidadePeriodos");
 }
 
-void Graduation::handleMessage(cMessage *msg) {
+void Fim::handleMessage(cMessage *msg) {
 
-    Student *aluno = dynamic_cast<Student*>(msg);
+    Aluno *aluno = dynamic_cast<Aluno*>(msg);
     double time = simTime().dbl();
-    aluno->setExitTime(time-6);
+    aluno->setSaida(time-6);
 //    emit(totalFormados, 1);
 //    emit(quantidadePeriodos, aluno->getQuantidadeSemestresCursados(time - 6));
     cancelAndDelete(msg);
 }
 
-void Graduation::finish(){
+void Fim::finish(){
 }
 
 
