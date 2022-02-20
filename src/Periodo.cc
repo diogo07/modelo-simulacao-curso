@@ -13,7 +13,7 @@ Define_Module(Periodo);
 
 void Periodo::initialize() {
 //    tamanhoFilaEspera = registerSignal("tamanhoFilaEspera");
-//    tamanhoTurma = registerSignal("tamanhoTurma");
+    tempoParaEvadir = registerSignal("tempoParaEvadir");
 //    totalMatriculas = registerSignal("totalMatriculas");
 
     registerSignalArray();
@@ -47,15 +47,16 @@ void Periodo::handleMessage(cMessage *msg) {
                 avaliarAlunoPorEvasaoEreprovacao(alunoDaFila);
             }
 
-//           for(int j = 0; j < filaEspera.getLength(); j++){
-//               Aluno *al = check_and_cast<Aluno*>(filaEspera.get(j));
-//               int duracaoVinculo = (tempo.dbl() - al->getEntrada()) / 6;
-//               if(evadir(duracaoVinculo)){
-//                   emit(evadidosPorSemestre[duracaoVinculo - 1], 1);
-//                   filaEspera.remove(al);
-//                   cancelAndDelete(al);
-//               }
-//           }
+           for(int j = 0; j < filaEspera.getLength(); j++){
+               Aluno *al = check_and_cast<Aluno*>(filaEspera.get(j));
+               int duracaoVinculo = (tempo.dbl() - al->getEntrada()) / 6;
+               if(evadir(duracaoVinculo)){
+                   emit(evadidosPorSemestre[duracaoVinculo - 1], 1);
+                   emit(tempoParaEvadir, duracaoVinculo);
+                   filaEspera.remove(al);
+                   cancelAndDelete(al);
+               }
+           }
         }
         emitirDadosDoPeriodo();
         tempo = tempoAtual;
@@ -114,6 +115,7 @@ void Periodo::avaliarAlunoPorEvasaoEreprovacao(Aluno *aluno) {
 
     if (evadir(duracaoVinculo) || (duracaoVinculo > 21)) {
         emit(evadidosPorSemestre[duracaoVinculo - 1], 1);
+        emit(tempoParaEvadir, duracaoVinculo);
         cancelAndDelete(aluno);
     } else {
 //        emit(totalPorSemestre[duracaoVinculo - 1], 1);

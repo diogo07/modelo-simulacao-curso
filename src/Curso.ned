@@ -5,7 +5,7 @@ simple Periodo
 {
     parameters:
         @display("i=block/network;");
-//        @signal[tamanhoTurma](type="long");
+        @signal[tempoParaEvadir](type="long");
 //        @signal[tamanhoFilaEspera](type="long");
 //        @signal[totalPorSemestre*](type=simtime_t);
         @signal[evadidosPorSemestre*](type=simtime_t);
@@ -15,7 +15,7 @@ simple Periodo
 //        @signal[duracaoTransicaoPeriodo*](type=simtime_t);
         @signal[turmaTamanho*](type=simtime_t);
         @signal[filaEsperaTamanho*](type=simtime_t);
-//        @statistic[tamanhoTurma](title="Turma"; record=stats; unit=ms);
+        @statistic[tempoParaEvadir](title="Tempo para Evadir"; record=stats; unit=ms);
 //        @statistic[tamanhoFilaEspera](title="Fila de Espera"; record=stats; unit=ms);
 //        @statisticTemplate[totalPorSemestreTemplate](title="Total por Semestre"; record=stats; unit=ms);
         @statisticTemplate[filaEsperaTamanhoTemplate](title="Fila de Espera"; record=stats; unit=ms);
@@ -63,7 +63,7 @@ network Curso
 //    @statistic[totalTurmas](title="Total Turmas"; record=stats; unit=ms);
 //    @statistic[totalMatriculas](title="Total Matriculas"; record=stats; unit=ms);
     int capacidadeTurma = 70;
-    int numeroPeriodos = 10;
+    int numeroPeriodos = 9;
     types:
         channel D extends ned.DatarateChannel
         {
