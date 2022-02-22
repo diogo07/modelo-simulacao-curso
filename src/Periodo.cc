@@ -13,7 +13,7 @@ Define_Module(Periodo);
 
 void Periodo::initialize() {
 //    tamanhoFilaEspera = registerSignal("tamanhoFilaEspera");
-    tempoParaEvadir = registerSignal("tempoParaEvadir");
+    tempoEvasao = registerSignal("tempoEvasao");
 //    totalMatriculas = registerSignal("totalMatriculas");
 
     registerSignalArray();
@@ -50,9 +50,9 @@ void Periodo::handleMessage(cMessage *msg) {
            for(int j = 0; j < filaEspera.getLength(); j++){
                Aluno *al = check_and_cast<Aluno*>(filaEspera.get(j));
                int duracaoVinculo = (tempo.dbl() - al->getEntrada()) / 6;
-               if(evadir(duracaoVinculo)){
+               if(duracaoVinculo > 21 || evadir(duracaoVinculo)){
                    emit(evadidosPorSemestre[duracaoVinculo - 1], 1);
-                   emit(tempoParaEvadir, duracaoVinculo);
+                   emit(tempoEvasao, duracaoVinculo > 21 ? 21 : duracaoVinculo);
                    filaEspera.remove(al);
                    cancelAndDelete(al);
                }
@@ -115,7 +115,7 @@ void Periodo::avaliarAlunoPorEvasaoEreprovacao(Aluno *aluno) {
 
     if (evadir(duracaoVinculo) || (duracaoVinculo > 21)) {
         emit(evadidosPorSemestre[duracaoVinculo - 1], 1);
-        emit(tempoParaEvadir, duracaoVinculo);
+        emit(tempoEvasao, duracaoVinculo > 21 ? 21 : duracaoVinculo);
         cancelAndDelete(aluno);
     } else {
 //        emit(totalPorSemestre[duracaoVinculo - 1], 1);
@@ -230,7 +230,7 @@ bool Periodo::graduar(int duracaoVinculo) {
 void Periodo::registerSignalArray() {
 
 
-    for(int i = 0; i < 71; ++i){
+    for(int i = 0; i < 81; ++i){
         char signalNameTurmaTamanho[32];
         sprintf(signalNameTurmaTamanho, "turmaTamanho%d", i);
         simsignal_t signalTurmaTamanho = registerSignal(signalNameTurmaTamanho);
@@ -239,7 +239,7 @@ void Periodo::registerSignalArray() {
         turmaTamanho[i] = signalTurmaTamanho;
     }
 
-    for (int i = 0; i < 10000; ++i) {
+    for (int i = 0; i < 7000; ++i) {
         char signalNameFilaEsperaTamanho[32];
         sprintf(signalNameFilaEsperaTamanho, "filaEsperaTamanho%d", i);
         simsignal_t signalFilaEsperaTamanho = registerSignal(signalNameFilaEsperaTamanho);

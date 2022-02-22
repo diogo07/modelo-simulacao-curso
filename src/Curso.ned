@@ -56,13 +56,13 @@ simple Fim
 network Curso
 {
     @display("bgb=2058.156,1930.248");
-//    @signal[totalAlunos](type="long");
+    @signal[tempoEvasao](type="long");
 //    @signal[totalTurmas](type="long");
 //    @signal[totalMatriculas](type="long");
-//    @statistic[totalAlunos](title="Total Alunos"; record=stats; unit=ms);
+    @statistic[tempoEvasao](title="Tempo Evasão"; record=stats; unit=ms);
 //    @statistic[totalTurmas](title="Total Turmas"; record=stats; unit=ms);
 //    @statistic[totalMatriculas](title="Total Matriculas"; record=stats; unit=ms);
-    int capacidadeTurma = 70;
+    int capacidadeTurma = 80;
     int numeroPeriodos = 9;
     types:
         channel D extends ned.DatarateChannel

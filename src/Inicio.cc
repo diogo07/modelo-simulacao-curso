@@ -10,7 +10,7 @@ class Inicio : public cSimpleModule {
   private:
     int portaSaida = 0;
     int tamanhoTurma = 40;
-    int numeroExecucoes = 10000;
+    int numeroExecucoes = 1000;
     bool executarPorTempoIndeterminado = false;
 //    simsignal_t totalAlunos;
 //    simsignal_t totalTurmas;

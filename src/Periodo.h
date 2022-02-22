@@ -12,7 +12,7 @@ class Periodo : public cSimpleModule {
 
 //      CONF DA TURMA
 //        simsignal_t tamanhoFilaEspera;
-        simsignal_t tempoParaEvadir;
+        simsignal_t tempoEvasao;
 
 //      INFO DO PERIODO
 //        simsignal_t totalMatriculas;
@@ -23,8 +23,8 @@ class Periodo : public cSimpleModule {
         simsignal_t graduadosPorSemestre[21];
 //        simsignal_t totalPorSemestre[21];
 //        simsignal_t duracaoTransicaoPeriodo[21];
-        simsignal_t filaEsperaTamanho[10000];
-        simsignal_t turmaTamanho[71];
+        simsignal_t filaEsperaTamanho[7000];
+        simsignal_t turmaTamanho[81];
 
 //        simsignal_t totalEvadidos;
 //        simsignal_t quantidadeEvadidosGeral;
@@ -69,7 +69,7 @@ class Periodo : public cSimpleModule {
      */
 
 
-       int capacidadesTurma[10] = {70, 40, 40, 40, 40, 40, 40, 40, 40, 40};
+       int capacidadesTurma[10] = {70, 70, 70, 70, 40, 40, 40, 40, 40, 40};
 
 
     /**
